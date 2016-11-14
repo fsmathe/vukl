@@ -1,0 +1,14 @@
+# .gitignore for VUKL project
+# TeX build products
+*.aux
+*.auxlock
+*.log
+*.out
+*.pdf
+*.toc
+*.maf
+*.mtc*
+# Various Data
+tex/vukl.tex
+csv/
+db/
