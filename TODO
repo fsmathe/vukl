@@ -1,0 +1,10 @@
+TODO:
+• Modularere Gestaltung des Projekts
+• Entferne hart-codierte Angaben
+• Dokumentation des Codes
+
+Nice To Have:
+• TikZ-externalize verbessern: Fragetext nicht mithashen (Achtung bei verschachtelten {}) → mehr identische Dateien; abgespeckte cls-Datei nutzen
+• twocolumn ist etwas unpassend, Reihenfolge der Antworten sollte eher 1=lo, 2=ro, 3=lu, 4=ru sein; ausserdem nicht auf einer Höhe (ist aber schwierig bei verschiedenen Fragetypen)
+• Kommandozeilenoption/Defaultwerte für VUKLin.py und VUKLout.py
+• Übungen mit 5 bis 8 Personen sollen in der Auswertung aber nicht im Aushang vorkommen

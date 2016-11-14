@@ -1,0 +1,147 @@
+﻿chapter [Lehrveranstaltung]
+section Dozent/in: [Vorname] [Nachname]
+print Es haben [Teilnehmerzahl] Personen an dieser Umfrage teilgenommen.
+% Bögen bis einschließlich SS 16
+VKVorl_30	%Studiengang
+VKVorl_31	%Semester
+VKVorl_1	%Raumgröße & Ausstattung
+VKVorl_2	%Betreuung über VK hinaus
+VKVorl_3	%Ruhe, keine Störungen
+VKVorl_4	%Dozent gut vorbereitet
+VKVorl_5	%Lehrstoff verständlich
+VKVorl_6	%ansprechender Vortragsstil
+VKVorl_7	%Dozent fördert Fragen und aktive Mitarbeit
+VKVorl_8	%Dozent antwortet auf Fragen hilfreich
+VKVorl_9	%Dozent ist an Lernerfolg interessiert
+VKVorl_10	%Dozent spricht klar und deutlich
+VKVorl_11	%Bedeutung und Nutzen der Themen vermittelt
+VKVorl_12	%Lehrstoff veranschaulicht
+VKVorl_13	%inhalticher Aufbau nachvollziehbar
+VKVorl_14	%Ich weiß, welches die zentralen Inhalte sind
+VKVorl_15	%VK fördert Interesse am Studium
+VKVorl_16	%könnte wichtigste Inhalte und...
+VKVorl_17	%bereite VK regelmäßig vor/nach
+VKVorl_18	%Angeregt durch den VK werde ich noch einzelne Inhalte vertiefen
+VKVorl_19	%fühle mich durch VK besser auf Studium vorbereitet
+VKVorl_20	%VK hat Motivation für Studium gestärkt
+VKVorl_21	%Alles in allem: Für mich lohnt sich der VK
+VKVorl_22	%Vor- und Nachbereitung pro Tag
+VKVorl_23	%prozentuale Teilnahme am VK
+VKVorl_24	%Menge des Lehrstoffs
+VKVorl_25	%Tempo des VK
+VKVorl_26	%Anforderungen
+VKVorl_27	%Inhalte des VK waren mir aus der Schule bekannt/unbekannt
+VKVorl_28	%Um dem VK folgen zu können, ist mein Vorwissen...
+VKVorl_29	%Der VK ist alles in allem
+VKVorl_32	%Kommentare VK-VL
+VKUeb1_27	%Kommentare E-Wochen
+
+% Bögen ab WS1617
+MaVKVL02_1	%Studiengang
+MaVKVL02_2	%Fachsemester
+MaVKVL02_3	%Dozent gut vorbereitet
+MaVKVL02_4	%kann Fachinhalte verständlich erklären
+MaVKVL02_5	%gestaltet Veranstaltung interessant
+MaVKVL02_6	%spricht akustisch verständlich
+MaVKVL02_7	%ermöglicht Rückfragen
+MaVKVL02_8	%antwortet hilfreich
+MaVKVL02_9	%vermittelt Bedeutung und Nutzen
+MaVKVL02_10	%veranschaulicht Lehrstoff gut
+MaVKVL02_11	%Vortragsstil
+MaVKVL02_12	%inhaltlicher Aufbau
+MaVKVL02_13	%zentrale Inhalte
+MaVKVL02_14	%um dem VK folgen zu können, ist mein Vorwissen
+MaVKVL02_15	%Inhalte waren aus der Schule bekannt
+MaVKVL02_16	%Schwierigkeitsgrad
+MaVKVL02_17	%Tempo
+MaVKVL02_18	%VK fördert Interesse am Studium
+MaVKVL02_19	%Raumausstattung
+MaVKVL02_20	%angenehme Atmosphäre
+MaVKVL02_21	%Hilfsangebote und Betreuung
+MaVKVL02_22	%Vor- und Nachbereitung pro Tag
+MaVKVL02_23	%prozentuale Teilnahme
+MaVKVL02_24	%bewerte VK insgesamt
+MaVKVL02_25	%Alles in allem: für mich lohnt sich der VK
+MaVKVL02_26	%könnte wichtigste Inhalte erklären
+MaVKVL02_27	%Vorkurs hat Motivation für Studium gestärkt
+MaVKVL02_28	%werde noch einzelne Inhalte vertiefen
+MaVKVL02_29	%fühle mich durch VK besser auf Studium vorbereitet
+% ÜBUNG
+MaVKUb02_5	%Üaufgaben auf VL abgestimmt
+MaVKUb02_6	%Anzahl Üaufgaben
+MaVKUb02_7	%Schwierigkeitsgrad Üaufgaben
+MaVKUb02_8	%um Üaufgaben bearbeiten zu können, ist mein Vorwissen
+MaVKUb02_9	%bewerte eigene Leistungen als
+MaVKUb02_10	%für mich lohnt sich Bearbeitung der Üaufgaben
+%KOMMENTARE
+MaVKVL02_30	%Kommentare Vorkurs
+MaVKUb02_11	%Kommentar Üorga
+
+% E-WOCHEN
+filter MaVKVL02_1 1 2 3
+section E-Wochen Mathematik
+MaVKVL02_31	%Infos der FS über Uni und Studium sind hilfreich
+MaVKVL02_32	%Kommentare E-Wochen
+unfilter
+filter MaVKVL02_1 4
+section E-Wochen Informatik
+MaVKVL02_31	%Infos der FS über Uni und Studium sind hilfreich
+MaVKVL02_32	%Kommentare E-Wochen
+unfilter
+%die Physiker sitzen nicht wirklich im Vorkurs und geben daher keine Kommentare zu den E-Wochen ab
+
+% ÜBUNGEN
+
+% Bögen bis einschließlich SS 16
+split VKUeb1_1	%Nummer ÜL
+section Übungsleiter/in: [VKUeb1_1]
+print Es haben [Teilnehmerzahl] Personen an dieser Umfrage teilgenommen.
+VKUeb1_24	%Studiengang
+VKUeb1_25	%Semester
+VKUeb1_2	%Raumgröße & Ausstattung
+VKUeb1_3	%Ruhe, keine Störungen
+VKUeb1_4	%Klima angenehm
+VKUeb1_5	%ÜL gut vorbereitet
+VKUeb1_6	%ÜL beherrscht Stoff
+VKUeb1_7	%ÜL motiviert Teilnehmer
+VKUeb1_8	%ÜL fördert Fragen und aktive Mitarbeit
+VKUeb1_9	%ÜL antwortet auf Fragen hilfreich
+VKUeb1_10	%ÜL ist an Lernerfolg interessiert
+VKUeb1_11	%ÜL spricht klar und deutlich
+VKUeb1_12	%Bedeutung und Nutzen der Aufgaben vermittelt
+VKUeb1_13	%Teilnehmer zum Vorführen eigener Lösungen ermuntert
+VKUeb1_14	%Für mich lohnt sich die Übung
+VKUeb1_15	%Übungsaufgaben helfen, Problematik des Stoffes zu erkkennen
+VKUeb1_16	%Infos des ÜL über Uni und Studium sind hilfreich
+VKUeb1_17	%Tempo der Übung
+VKUeb1_18	%Anzahl Übungsaufgaben
+VKUeb1_19	%Schwierigkeitsgrad der Ü-Aufgaben
+VKUeb1_20	%um Ü-Aufgaben bearbeiten zu können, ist mein Vorwissen...
+VKUeb1_21	%bewerte ÜL als...
+VKUeb1_22	%bewerte eigene Leistung als...
+VKUeb1_23	%bewerte Übung insgesamt
+VKUeb1_26	%Kommentare Übung VK
+unsplit
+
+%Bögen ab WS1617
+split MaVKUb02_1	%Nummer ÜL
+section Übungsleiter/in: [MaVKUb02_1]
+print Es haben [Teilnehmerzahl] Personen an dieser Umfrage teilgenommen.
+MaVKUb02_2	%Studiengang
+MaVKUb02_3	%Fachsemester
+MaVKUb02_4	%Raumgröße
+MaVKUb02_12	%wirkt stets gut vorbereitet
+MaVKUb02_13	%beherrscht den Stoff
+MaVKUb02_14	%motiviert Teilnehmer
+MaVKUb02_15	%fördert Fragen und aktive Mitarbeit
+MaVKUb02_16	%antwortet auf Fragen hilfreich
+MaVKUb02_17	%ist an meinem Lernerfolg interessiert
+MaVKUb02_18	%spricht akustisch verständlich 
+MaVKUb02_19	%Bedeutung und Nutzen der Aufgaben vermittelt
+MaVKUb02_20	%Teilnehmer zum Vorführen eigener Lösungen ermuntert
+MaVKUb02_21	%angenehme Atmosphäre
+MaVKUb02_22	%Tempo der Übung
+MaVKUb02_23	%bewerte Üleiter insgesamt
+MaVKUb02_24	%Alles in allem: für mich lohnt sich der Besuch der Übung
+MaVKUb02_25	%Kommentare Üleiter
+

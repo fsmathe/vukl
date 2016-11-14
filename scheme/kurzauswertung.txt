@@ -1,0 +1,128 @@
+chapter [Lehrveranstaltung]
+section Dozent/in: [Titel] [Vorname] [Nachname]
+print Es haben [Teilnehmerzahl] Personen an dieser Umfrage teilgenommen.
+% Bögen bis einschließlich WS14/15
+MaGVor_1 %
+MaGVor_26
+MaGVor_27
+MaGVor_22
+MaGVor_13
+MaGVor_17
+MaHVor_1
+MaHVor_30
+MaHVor_31
+MaHVor_26
+MaHVor_14
+MaHVor_19
+Ma2Ueb_10
+MaPrak_13
+MaHVor_16
+MaGVor_29
+MaHVor_34
+Ma2Ueb_11
+MaPrak_14
+MaGdM_10
+% Bögen ab SS15
+MaGVL01_1	%führender Studiengang
+MaGVL01_26	%Insgesamt bewerte ich die VL als...
+MaGVL01_27	%Alles in allem: Für mich lohnt sich die VL.
+MaGVL01_22	%Arbeitsaufwand
+MaGVL01_13	%Tempo der VL
+MaGVL01_17	%Schwierigkeitsgrad der VL
+MaHVL01_1	%führender Studiengang
+MaHVL01_30	%Ich bewerte die VL insgesamt als...
+MaHVL01_31	%Alles in allem: Für mich lohnt sich die VL.
+MaHVL01_26	%Arbeitsaufwand
+MaHVL01_14	%Tempo der VL
+MaHVL01_19	%Schwierigkeitsgrad der VL
+MaUeb01_10	%Für mich lohnt sich die Bearbeitung der Ü-Aufgaben.
+MaPrak01_13	%Für mich lohnt sich die Bearbeitung der Prak-Aufgaben.
+MaHVL01_16	%empfinde Inhalte der VL
+MaEwP01_3	%Rechnerausstattung
+MaEwP01_4	%besuche regelmäßig die VL
+filter MaEwP01_4 1 % die, die "ja" sagen
+append  (regelmäßig Teilnehmende)
+MaEwP01_5	%Abstimmung Ü-Aufgaben auf VL (regelmäßig Teilnehmende)
+unappend
+unfilter
+MaGVL01_29	%Kommentare GVL
+MaHVL01_34	%Kommentare HVL
+MaUeb01_11	%Kommentare Ü-Orga
+MaPrak01_14	%Kommentare Prak-Orga
+MaTut01_10	%Kommentare Tut-Orga
+MaEwP01_16	%Kommentare EWP-Ü-Orga
+MaLehr01_36 % Ich bewerte die Veranstaltung insgesamt als
+MaLehr01_37 % Alles in allem für mich lohnt sich...
+MaLehr01_32 % Arbeitsaufwand
+MaLehr01_13 % Tempo der VL
+MaLehr01_18 % Schwierigkeitsgrad der VL
+MaLehr01_31 % Für mich lohnt sich die Bearbeitung der Übungsaufgaben. 
+MaLehr01_15 % Ich empfinde die Inhalte der Vorlesung als
+MaLehr01_19 % Schulbezug
+MaLehr01_39 % Kommentare
+
+% Bögen bis einschließlich WS14/15
+split Ma2Ueb_1
+section Übungsleiter/in: [Ma2Ueb_1]
+Ma2Ueb_26
+Ma2Ueb_27
+Ma2Ueb_12
+Ma2Ueb_19
+Ma2Ueb_28
+unsplit
+split MaUeb01_1
+% Bögen ab SS15
+section Übungsleiter/in: [MaUeb01_1]
+MaUeb01_26	%Insgesamt bewerte ich den Ü-Leiter als...
+MaUeb01_27	%Alles in allem: Für ich lohnt sich der Besuch der Übung
+MaUeb01_12	%Ü-Leiter wirkt gut vorbereitet
+MaUeb01_19	%bewertet Ü-Aufgaben transparent
+MaUeb01_28	%Kommentare Ü-Leiter
+unsplit
+
+% Bögen bis einschließlich WS14/15
+split MaPrak_1
+section Praktikumsbetreuer/in: [MaPrak_1]
+MaPrak_25
+MaPrak_26
+MaPrak_15
+MaPrak_21
+MaPrak_27
+unsplit
+% Bögen ab SS15
+split MaPrak01_1
+section Praktikumsbetreuer/in: [MaPrak01_1]
+MaPrak01_25	%Insgesamt bewerte ich den Prak-Betreuer als...
+MaPrak01_26	%Alles in allem: Für mich lohnt sich...
+MaPrak01_15	%Prak-Betreuer wirkt gut vorbereitet
+MaPrak01_21	%bewertet Prak-Aufgaben transparent
+MaPrak01_27	%Kommentare Prak-Betreuer
+unsplit
+
+% Bögen bis einschließlich WS14/15
+split MaGdM_1
+section Tutoriumsleiter/in: [MaGdM_1]
+MaGdM_21
+MaGdM_22
+MaGdM_11
+MaGdM_15
+MaGdM_23
+unsplit
+% Bögen ab SS15
+split MaTut01_1
+section Tutoriumsleiter/in: [MaTut01_1]% TODO: Füge Studiengang ein.
+MaTut01_21	%Insgesamt bewerte ich den Tut-Leiter als...
+MaTut01_22	%Alles in allem: Für mich lohnt sich...
+MaTut01_11	%Tut-Leiter wirkt gut vorbereitet
+MaTut01_15	%antwortet auf Fragen hilfreich
+MaTut01_23	%Kommentare Tut-Leiter
+unsplit
+
+split MaEwP01_17 MaEwP01_32
+section EWP Übungsleiter/in: [MaEwP01_17 MaEwP01_32]
+MaEwP01_29 MaEwP01_44	%Insgesamt bewerte ich den Ü-Leiter als...
+MaEwP01_30 MaEwP01_45	%Alles in allem: Für mich lohnt sich...
+MaEwP01_18 MaEwP01_33	%Ü-Leiter wirkt gut vorbereitet
+MaEwP01_25 MaEwP01_40	%bewertet Ü-Aufgaben transparent
+MaEwP01_31 MaEwP01_46	%Kommentare Ü-Leiter
+unsplit

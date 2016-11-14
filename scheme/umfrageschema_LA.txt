@@ -1,0 +1,404 @@
+%TODO: EwP fehlt
+filter MaGVL01_1 2
+filter MaHVL01_1 2
+filter MaUeb01_2 2
+filter MaTut01_2 2
+filter MaPrak01_2 2
+chapter [Lehrveranstaltung]
+section Dozent/in: [Vorname] [Nachname] (Lehramt)
+print Es haben [Teilnehmerzahl] Lehramtsstudierende an dieser Umfrage teilgenommen.
+% Bögen bis einschließlich WS 14/15
+MaGVor_1
+semester MaGVor
+MaGVor_4
+MaGVor_5
+MaGVor_6
+MaGVor_7
+MaGVor_8
+MaGVor_9
+MaGVor_10
+MaGVor_11
+MaGVor_12
+MaGVor_13
+MaGVor_14
+MaGVor_15
+MaGVor_16
+MaGVor_17
+MaGVor_18
+MaGVor_19
+MaGVor_20
+MaGVor_21
+MaGVor_22
+MaGVor_23
+MaGVor_24
+MaGVor_25
+MaGVor_26
+MaGVor_27
+MaGVor_28
+MaHVor_1
+MaHVor_2
+semester MaHVor
+MaHVor_5
+MaHVor_6
+MaHVor_7
+MaHVor_8
+MaHVor_9
+MaHVor_10
+MaHVor_11
+MaHVor_12
+MaHVor_13
+MaHVor_14
+MaHVor_15
+MaHVor_16
+MaHVor_17
+MaHVor_18
+MaHVor_19
+MaHVor_20
+MaHVor_21
+MaHVor_22
+MaHVor_23
+MaHVor_24
+MaHVor_25
+MaHVor_26
+MaHVor_27
+MaHVor_28
+MaHVor_29
+MaHVor_30
+MaHVor_31
+MaHVor_32
+MaHVor_33
+Ma2Ueb_6
+Ma2Ueb_7
+Ma2Ueb_8
+Ma2Ueb_9
+Ma2Ueb_10
+MaGdM_5
+MaGdM_6
+MaGdM_7
+MaGdM_8
+MaGdM_9
+MaPrak_5
+MaPrak_6
+MaPrak_7
+MaPrak_8
+MaPrak_9
+MaPrak_10
+MaPrak_11
+MaPrak_12
+MaPrak_13
+MaGVor_29
+MaHVor_34
+Ma2Ueb_11
+MaGdM_10
+MaPrak_14
+
+% Bögen ab SS 15
+
+MaGVL01_1	%führender Studiengang
+semester MaGVL01 %Semester (Bachelor/Diplom und Master fusioniert, deshalb muss man semester-Befehl verwenden)
+MaGVL01_4	%Dozent gut vorbereitet
+MaGVL01_5	%Lehrstoff verständlich vermittelt
+MaGVL01_6	%Vortragsstil ist gut
+MaGVL01_7	%fördert Fragen und aktive Mitarbeit
+MaGVL01_8	%antwortet auf Fragen hilfreich
+MaGVL01_9	%spricht klar und deutlich
+MaGVL01_10	%Bedeutung und Nutzen der Themen vermittelt
+MaGVL01_11	%Lehrstoff gut veranschaulicht
+MaGVL01_12	%Bezüge zu anderen Teilgebieten
+MaGVL01_13	%Tempo der VL
+MaGVL01_14	%inhaltlicher Aufbau der Gesamt-VL
+MaGVL01_15	%Ich weiß, welches die zentralen Inhalte der VL sind.
+MaGVL01_16	%Meine Vorkenntnisse
+MaGVL01_17	%Schwierigkeitsgrad der VL
+MaGVL01_18	%Raumgröße
+MaGVL01_19	%Raumausstattung
+MaGVL01_20	%Hilfsangebote und Betreuung über VL hinaus
+MaGVL01_21	%Ich bearbeite die Übungsaufgaben.
+MaGVL01_22	%Arbeitsaufwand
+MaGVL01_23	%eigene Vor- und Nachbearbeitung
+MaGVL01_24	%terminliche Überschneidungen (Frage)
+MaGVL01_25	%terminliche Überschneidungen (Kommentare)
+MaGVL01_26	%Ich bewerte die VL insgesamt
+MaGVL01_27	%Alles in allem: Für mich lohnt sich die VL.
+MaGVL01_28	%Ich könnte die wichtigsten Inhalte und grundlegenden Konzepte jetzt auch jemand anderem erklären.
+MaHVL01_1	%Führender Studiengang
+MaHVL01_2	%Vertiefungsgebiet
+semester MaHVL01 %Semester (Bachelor/Diplom und Master fusioniert, deshalb muss man semester-Befehl verwenden)
+MaHVL01_5	%Dozent gut vorbereitet
+MaHVL01_6	%Lehrstoff verständlich vermittelt
+MaHVL01_7	%Vortragsstil ist gut
+MaHVL01_8	%fördert Fragen und aktive Mitarbeit
+MaHVL01_9	%antwortet auf Fragen hilfreich
+MaHVL01_10	%spricht klar und deutlich
+MaHVL01_11	%Bedeutung und Nutzen der Themen vermittelt
+MaHVL01_12	%Lehrstoff gut veranschaulicht
+MaHVL01_13	%Bezüge zu anderen Teilgebieten
+MaHVL01_14	%Tempo der VL
+MaHVL01_15	%inhaltlicher Aufbau der Gesamt-VL
+MaHVL01_16	%empfinde Inhalte der VL
+MaHVL01_17	%Ich weiß, welches die zentralen Inhalte der VL sind.
+MaHVL01_18-de	%Meine Vorkenntnisse waren (de)
+MaHVL01_18-en	%Voraussetzungen der VL waren (en)
+MaHVL01_19	%Schwierigkeitsgrad der VL
+MaHVL01_20	%inhaltliche Überschneidungen (Frage)
+MaHVL01_21	%inhaltliche Überschneidungen (Kommentare)
+MaHVL01_22	%Raumgröße
+MaHVL01_23	%Raumausstattung
+MaHVL01_24	%Hilfsangebote und Betreuung über VL hinaus
+MaHVL01_25	%Ich bearbeite die Übungsaufgaben.
+MaHVL01_26	%Arbeitsaufwand
+MaHVL01_27	%bewerte eigene Vor- und Nachbereitung
+MaHVL01_28	%terminliche Überschneidungen (Frage)
+MaHVL01_29	%terminliche Überschneidungen (Kommentare)
+MaHVL01_30	%Ich bewerte die VL insgesamt
+MaHVL01_31	%Alles in allem: Für mich lohnt sich die VL.
+MaHVL01_32	%Ich könnte die wichtigsten Inhalte und grundlegenden Konzepte jetzt auch jemand anderem erklären.
+MaHVL01_33	%Ich kann mir vorstellen, zu diesem Themengebiet eine Abschlussarbeit zu schreiben.
+MaUeb01_6	%Abstimmung Ü-Aufgaben zu VL
+MaUeb01_7	%Anzahl Ü-Aufgaben
+MaUeb01_8	%Schwierigkeitsgrad Ü-Aufgaben
+MaUeb01_9	%Ich bewerte meine eigenen Leistungen als
+MaUeb01_10	%Für mich lohnt sich die Bearbeitung der Ü-Aufgaben.
+MaTut01_5	%Abstimmung Tut zu VL
+MaTut01_6	%Tut hilft, Problematik des Stoffes zu erkennen und zu klären
+MaTut01_7	%Schwierigkeitsgrad der Aufgaben und Beispiele
+MaTut01_8	%an Schulstoff vorausgesetzte Inhalte waren mir aus der Schule bekannt
+MaTut01_9	%Ich bewerte meine eigenen Leistungen als
+MaPrak01_5	%Abstimmung Prak-Aufgaben zu VL
+MaPrak01_6	%Umfang der Aufgaben
+MaPrak01_7	%Schwierigkeitsgrad Aufgaben
+MaPrak01_8	%Kenntnisse aus EWP und Prak reichen für Bearbeiten der Aufgaben
+MaPrak01_9	%bin mit Dauer der betreuten Rechnerzeit zufrieden
+MaPrak01_10	%Arbeitsaufwand Prak-Aufgaben
+MaPrak01_11	%Arbeitsaufwand gut über Semester verteilt
+MaPrak01_12	%Ich bewerte meine eigenen Leistungen als
+MaPrak01_13	%Für mich lohnt sich die Bearbeitung der Prak-Aufgaben.
+MaGVL01_29	%Kommentare GVL
+MaHVL01_34	%Kommentare HVL
+MaUeb01_11	%Kommentare Ü-Orga
+MaTut01_10	%Kommentare Tut-Orga
+MaPrak01_14	%Kommentare Prak-Orga
+unfilter
+unfilter
+unfilter
+unfilter
+unfilter
+
+section Dozent/in: [Vorname] [Nachname] (Alle Studierende zum Vergleich)
+print Es haben [Teilnehmerzahl] Personen an dieser Umfrage teilgenommen.
+% Bögen bis einschließlich WS 14/15
+MaGVor_1
+semester MaGVor
+MaGVor_4
+MaGVor_5
+MaGVor_6
+MaGVor_7
+MaGVor_8
+MaGVor_9
+MaGVor_10
+MaGVor_11
+MaGVor_12
+MaGVor_13
+MaGVor_14
+MaGVor_15
+MaGVor_16
+MaGVor_17
+MaGVor_18
+MaGVor_19
+MaGVor_20
+MaGVor_21
+MaGVor_22
+MaGVor_23
+MaGVor_24
+MaGVor_25
+MaGVor_26
+MaGVor_27
+MaGVor_28
+MaHVor_1
+MaHVor_2
+semester MaHVor
+MaHVor_5
+MaHVor_6
+MaHVor_7
+MaHVor_8
+MaHVor_9
+MaHVor_10
+MaHVor_11
+MaHVor_12
+MaHVor_13
+MaHVor_14
+MaHVor_15
+MaHVor_16
+MaHVor_17
+MaHVor_18
+MaHVor_19
+MaHVor_20
+MaHVor_21
+MaHVor_22
+MaHVor_23
+MaHVor_24
+MaHVor_25
+MaHVor_26
+MaHVor_27
+MaHVor_28
+MaHVor_29
+MaHVor_30
+MaHVor_31
+MaHVor_32
+MaHVor_33
+Ma2Ueb_6
+Ma2Ueb_7
+Ma2Ueb_8
+Ma2Ueb_9
+Ma2Ueb_10
+MaGdM_5
+MaGdM_6
+MaGdM_7
+MaGdM_8
+MaGdM_9
+MaPrak_5
+MaPrak_6
+MaPrak_7
+MaPrak_8
+MaPrak_9
+MaPrak_10
+MaPrak_11
+MaPrak_12
+MaPrak_13
+MaGVor_29
+MaHVor_34
+Ma2Ueb_11
+MaGdM_10
+MaPrak_14
+
+% Bögen ab SS 15
+
+MaGVL01_1	%Führender Studiengang
+semester MaGVL01 %Semester (Bachelor/Diplom und Master fusioniert, deshalb muss man semester-Befehl verwenden)
+MaGVL01_4	%Dozent gut vorbereitet
+MaGVL01_5	%Lehrstoff verständlich vermittelt
+MaGVL01_6	%Vortragsstil ist gut
+MaGVL01_7	%fördert Fragen und aktive Mitarbeit
+MaGVL01_8	%antwortet auf Fragen hilfreich
+MaGVL01_9	%spricht klar und deutlich
+MaGVL01_10	%Bedeutung und Nutzen der Themen vermittelt
+MaGVL01_11	%Lehrstoff gut veranschaulicht
+MaGVL01_12	%Bezüge zu anderen Teilgebieten
+MaGVL01_13	%Tempo der VL
+MaGVL01_14	%inhaltlicher Aufbau der Gesamt-VL
+MaGVL01_15	%Ich weiß, welches die zentralen Inhalte der VL sind.
+MaGVL01_16	%Meine Vorkenntnisse
+MaGVL01_17	%Schwierigkeitsgrad der VL
+MaGVL01_18	%Raumgröße
+MaGVL01_19	%Raumausstattung
+MaGVL01_20	%Hilfsangebote und Betreuung über VL hinaus
+MaGVL01_21	%Ich bearbeite die Übungsaufgaben.
+MaGVL01_22	%Arbeitsaufwand
+MaGVL01_23	%eigene Vor- und Nachbearbeitung
+MaGVL01_24	%terminliche Überschneidungen (Frage)
+MaGVL01_25	%terminliche Überschneidungen (Kommentare)
+MaGVL01_26	%Ich bewerte die VL insgesamt
+MaGVL01_27	%Alles in allem: Für mich lohnt sich die VL.
+MaGVL01_28	%Ich könnte die wichtigsten Inhalte und grundlegenden Konzepte jetzt auch jemand anderem erklären.
+MaHVL01_1	%Führender Studiengang
+MaHVL01_2	%Vertiefungsgebiet
+semester MaHVL01 %Semester (Bachelor/Diplom und Master fusioniert, deshalb muss man semester-Befehl verwenden)
+MaHVL01_5	%Dozent gut vorbereitet
+MaHVL01_6	%Lehrstoff verständlich vermittelt
+MaHVL01_7	%Vortragsstil ist gut
+MaHVL01_8	%fördert Fragen und aktive Mitarbeit
+MaHVL01_9	%antwortet auf Fragen hilfreich
+MaHVL01_10	%spricht klar und deutlich
+MaHVL01_11	%Bedeutung und Nutzen der Themen vermittelt
+MaHVL01_12	%Lehrstoff gut veranschaulicht
+MaHVL01_13	%Bezüge zu anderen Teilgebieten
+MaHVL01_14	%Tempo der VL
+MaHVL01_15	%inhaltlicher Aufbau der Gesamt-VL
+MaHVL01_16	%empfinde Inhalte der VL
+MaHVL01_17	%Ich weiß, welches die zentralen Inhalte der VL sind.
+MaHVL01_18-de	%Meine Vorkenntnisse waren (de)
+MaHVL01_18-en	%Voraussetzungen der VL waren (en)
+MaHVL01_19	%Schwierigkeitsgrad der VL
+MaHVL01_20	%inhaltliche Überschneidungen (Frage)
+MaHVL01_21	%inhaltliche Überschneidungen (Kommentare)
+MaHVL01_22	%Raumgröße
+MaHVL01_23	%Raumausstattung
+MaHVL01_24	%Hilfsangebote und Betreuung über VL hinaus
+MaHVL01_25	%Ich bearbeite die Übungsaufgaben.
+MaHVL01_26	%Arbeitsaufwand
+MaHVL01_27	%bewerte eigene Vor- und Nachbereitung
+MaHVL01_28	%terminliche Überschneidungen (Frage)
+MaHVL01_29	%terminliche Überschneidungen (Kommentare)
+MaHVL01_30	%Ich bewerte die VL insgesamt
+MaHVL01_31	%Alles in allem: Für mich lohnt sich die VL.
+MaHVL01_32	%Ich könnte die wichtigsten Inhalte und grundlegenden Konzepte jetzt auch jemand anderem erklären.
+MaHVL01_33	%Ich kann mir vorstellen, zu diesem Themengebiet eine Abschlussarbeit zu schreiben.
+MaUeb01_6	%Abstimmung Ü-Aufgaben zu VL
+MaUeb01_7	%Anzahl Ü-Aufgaben
+MaUeb01_8	%Schwierigkeitsgrad Ü-Aufgaben
+MaUeb01_9	%Ich bewerte meine eigenen Leistungen als
+MaUeb01_10	%Für mich lohnt sich die Bearbeitung der Ü-Aufgaben.
+MaTut01_5	%Abstimmung Tut zu VL
+MaTut01_6	%Tut hilft, Problematik des Stoffes zu erkennen und zu klären
+MaTut01_7	%Schwierigkeitsgrad der Aufgaben und Beispiele
+MaTut01_8	%an Schulstoff vorausgesetzte Inhalte waren mir aus der Schule bekannt
+MaTut01_9	%Ich bewerte meine eigenen Leistungen als
+MaPrak01_5	%Abstimmung Prak-Aufgaben zu VL
+MaPrak01_6	%Umfang der Aufgaben
+MaPrak01_7	%Schwierigkeitsgrad Aufgaben
+MaPrak01_8	%Kenntnisse aus EWP und Prak reichen für Bearbeiten der Aufgaben
+MaPrak01_9	%bin mit Dauer der betreuten Rechnerzeit zufrieden
+MaPrak01_10	%Arbeitsaufwand Prak-Aufgaben
+MaPrak01_11	%Arbeitsaufwand gut über Semester verteilt
+MaPrak01_12	%Ich bewerte meine eigenen Leistungen als
+MaPrak01_13	%Für mich lohnt sich die Bearbeitung der Prak-Aufgaben.
+MaGVL01_29	%Kommentare GVL
+MaHVL01_34	%Kommentare HVL
+MaUeb01_11	%Kommentare Ü-Orga
+MaTut01_10	%Kommentare Tut-Orga
+MaPrak01_14	%Kommentare Prak-Orga
+
+
+chapter [Lehrveranstaltung] (LA-Veranstaltung)
+section Dozent/in: [Vorname] [Nachname]
+print Es haben [Teilnehmerzahl] Lehramtsstudierende an dieser Umfrage teilgenommen.
+MaLehr01_1	%angestrebtes LA
+semester MaLehr01 %Semester (Bachelor/Diplom und Master fusioniert, deshalb muss man semester-Befehl verwenden)
+MaLehr01_4	%Dozent gut vorbereitet
+MaLehr01_5	%Lehrstoff verständlich vermittelt
+MaLehr01_6	%Vortragsstil ist gut
+MaLehr01_7	%fördert Fragen und aktive Mitarbeit
+MaLehr01_8	%antwortet auf Fragen hilfreich
+MaLehr01_9	%spricht klar und deutlich
+MaLehr01_10	%Bedeutung und Nutzen der Themen vermittelt
+MaLehr01_11	%Lehrstoff gut veranschaulicht
+MaLehr01_12	%Bezüge zu anderen Teilgebieten
+MaLehr01_13	%Tempo der VL
+MaLehr01_14	%inhaltlicher Aufbau der Gesamt-VL
+MaLehr01_15	%empfinde Inhalte der VL
+MaLehr01_16	%Ich weiß, welches die zentralen Inhalte der VL sind.
+MaLehr01_17	%Meine Vorkenntnisse waren (de)
+MaLehr01_18	%Schwierigkeitsgrad der VL
+MaLehr01_19	%Schulbezug
+MaLehr01_20	%inhaltliche Überschneidungen (Frage)
+MaLehr01_21	%inhaltliche Überschneidungen (Kommentare)
+MaLehr01_22	%Raumgröße
+MaLehr01_23	%Raumausstattung
+MaLehr01_24	%Hilfsangebote und Betreuung über VL hinaus
+MaLehr01_25	%Ich bearbeite die Ü-Aufgaben.
+MaLehr01_26	%Abstimmung Ü-Aufgaben zu VL
+MaLehr01_27	%Anzahl Ü-Aufgaben
+MaLehr01_28	%Schwierigkeitsgrad Ü-Aufgaben
+MaLehr01_29	%Rückmeldungen zu Abgaben hilfreich
+MaLehr01_30	%Bewertung der Abgaben transparent
+MaLehr01_31	%Für mich lohnt sich die Bearbeitung der Ü-Aufgaben.
+MaLehr01_32	%Arbeitsaufwand
+MaLehr01_33	%Ich bewerte meine eigenen Leistungen als
+MaLehr01_34	%terminliche Überschneidungen (Frage)
+MaLehr01_35	%terminliche Überschneidungen (Kommentare)
+MaLehr01_36	%Ich bewerte die Veranstaltung insgesamt als
+MaLehr01_37	%Alles in allem: Für mich lohnt sich die Veranstaltung.
+MaLehr01_38	%Ich könnte die wichtigsten Inhalte und grundlegenden Konzepte jetzt auch jemand anderem erklären.
+MaLehr01_39	%Kommentare LA
+
+

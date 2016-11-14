@@ -1,0 +1,252 @@
+﻿chapter [Lehrveranstaltung]
+section Dozent/in: [Vorname] [Nachname]
+print Es haben [Teilnehmerzahl] Personen an dieser Umfrage teilgenommen.
+% Bögen ab SS 15
+MaGVL01_1	%Führender Studiengang
+semester MaGVL01 %Semester (Bachelor/Diplom und Master fusioniert, deshalb muss man semester-Befehl verwenden)
+MaGVL01_4	%Dozent gut vorbereitet
+MaGVL01_5	%Lehrstoff verständlich vermittelt
+MaGVL01_6	%Vortragsstil ist gut
+MaGVL01_7	%fördert Fragen und aktive Mitarbeit
+MaGVL01_8	%antwortet auf Fragen hilfreich
+MaGVL01_9	%spricht klar und deutlich
+MaGVL01_10	%Bedeutung und Nutzen der Themen vermittelt
+MaGVL01_11	%Lehrstoff gut veranschaulicht
+MaGVL01_12	%Bezüge zu anderen Teilgebieten
+MaGVL01_13	%Tempo der VL
+MaGVL01_14	%inhaltlicher Aufbau der Gesamt-VL
+MaGVL01_15	%Ich weiß, welches die zentralen Inhalte der VL sind.
+MaGVL01_16	%Meine Vorkenntnisse
+MaGVL01_17	%Schwierigkeitsgrad der VL
+MaGVL01_18	%Raumgröße
+MaGVL01_19	%Raumausstattung
+MaGVL01_20	%Hilfsangebote und Betreuung über VL hinaus
+MaGVL01_21	%Ich bearbeite die Übungsaufgaben.
+MaGVL01_22	%Arbeitsaufwand
+MaGVL01_23	%eigene Vor- und Nachbearbeitung
+MaGVL01_24	%terminliche Überschneidungen (Frage)
+MaGVL01_25	%terminliche Überschneidungen Kommentare)
+MaGVL01_26	%Ich bewerte die VL insgesamt
+MaGVL01_27	%Alles in allem: Für mich lohnt sich die VL.
+MaGVL01_28	%Ich könnte die wichtigsten Inhalte und grundlegenden Konzepte jetzt auch jemand anderem erklären.
+MaHVL01_1	%Führender Studiengang
+MaHVL01_2	%Vertiefungsgebiet
+semester MaHVL01 %Semester (Bachelor/Diplom und Master fusioniert, deshalb muss man semester-Befehl verwenden)
+MaHVL01_5	%Dozent gut vorbereitet
+MaHVL01_6	%Lehrstoff verständlich vermittelt
+MaHVL01_7	%Vortragsstil ist gut
+MaHVL01_8	%fördert Fragen und aktive Mitarbeit
+MaHVL01_9	%antwortet auf Fragen hilfreich
+MaHVL01_10	%spricht klar und deutlich
+MaHVL01_11	%Bedeutung und Nutzen der Themen vermittelt
+MaHVL01_12	%Lehrstoff gut veranschaulicht
+MaHVL01_13	%Bezüge zu anderen Teilgebieten
+MaHVL01_14	%Tempo der VL
+MaHVL01_15	%inhaltlicher Aufbau der Gesamt-VL
+MaHVL01_16	%empfinde Inhalte der VL
+MaHVL01_17	%Ich weiß, welches die zentralen Inhalte der VL sind.
+MaHVL01_18-de	%Meine Vorkenntnisse waren (de)
+MaHVL01_18-en	%Voraussetzungen der VL waren (en)
+MaHVL01_19	%Schwierigkeitsgrad der VL
+MaHVL01_20	%inhaltliche Überschneidungen (Frage)
+MaHVL01_21	%inhaltliche Überschneidungen (Kommentare)
+MaHVL01_22	%Raumgröße
+MaHVL01_23	%Raumausstattung
+MaHVL01_24	%Hilfsangebote und Betreuung über VL hinaus
+MaHVL01_25	%Ich bearbeite die Übungsaufgaben.
+MaHVL01_26	%Arbeitsaufwand
+MaHVL01_27	%bewerte eigene Vor- und Nachbereitung
+MaHVL01_28	%terminliche Überschneidungen (Frage)
+MaHVL01_29	%terminliche Überschneidungen (Kommentare)
+MaHVL01_30	%Ich bewerte die VL insgesamt
+MaHVL01_31	%Alles in allem: Für mich lohnt sich die VL.
+MaHVL01_32	%Ich könnte die wichtigsten Inhalte und grundlegenden Konzepte jetzt auch jemand anderem erklären.
+MaHVL01_33	%Ich kann mir vorstellen, zu diesem Themengebiet eine Abschlussarbeit zu schreiben.
+MaUeb01_6	%Abstimmung Ü-Aufgaben zu VL
+MaUeb01_7	%Anzahl Ü-Aufgaben
+MaUeb01_8	%Schwierigkeitsgrad Ü-Aufgaben
+MaUeb01_9	%Ich bewerte meine eigenen Leistungen als
+MaUeb01_10	%Für mich lohnt sich die Bearbeitung der Ü-Aufgaben.
+MaTut01_5	%Abstimmung Tut zu VL
+MaTut01_6	%Tut hilft, Problematik des Stoffes zu erkennen und zu klären
+MaTut01_7	%Schwierigkeitsgrad der Aufgaben und Beispiele
+MaTut01_8	%an Schulstoff vorausgesetzte Inhalte waren mir aus der Schule bekannt
+MaTut01_9	%Ich bewerte meine eigenen Leistungen als
+MaPrak01_5	%Abstimmung Prak-Aufgaben zu VL
+MaPrak01_6	%Umfang der Aufgaben
+MaPrak01_7	%Schwierigkeitsgrad Aufgaben
+MaPrak01_8	%Kenntnisse aus EWP und Prak reichen für Bearbeiten der Aufgaben
+MaPrak01_9	%bin mit Dauer der betreuten Rechnerzeit zufrieden
+MaPrak01_10	%Arbeitsaufwand Prak-Aufgaben
+MaPrak01_11	%Arbeitsaufwand gut über Semester verteilt
+MaPrak01_12	%Ich bewerte meine eigenen Leistungen als
+MaPrak01_13	%Für mich lohnt sich die Bearbeitung der Prak-Aufgaben.
+
+%Kommentare, die beim Dozenten stehen
+%MaGVL01_29	%Kommentare GVL
+%MaHVL01_34	%Kommentare HVL
+%MaUeb01_11	%Kommentare Ü-Orga
+%MaTut01_10	%Kommentare Tut-Orga
+%MaPrak01_14	%Kommentare Prak-Orga
+%MaEwP01_16	%Kommentare EWP-Ü-Orga
+
+MaLehr01_1	%angestrebtes LA
+semester MaLehr01 %Semester (Bachelor/Diplom und Master fusioniert, deshalb muss man semester-Befehl verwenden)
+MaLehr01_4	%Dozent gut vorbereitet
+MaLehr01_5	%Lehrstoff verständlich vermittelt
+MaLehr01_6	%Vortragsstil ist gut
+MaLehr01_7	%fördert Fragen und aktive Mitarbeit
+MaLehr01_8	%antwortet auf Fragen hilfreich
+MaLehr01_9	%spricht klar und deutlich
+MaLehr01_10	%Bedeutung und Nutzen der Themen vermittelt
+MaLehr01_11	%Lehrstoff gut veranschaulicht
+MaLehr01_12	%Bezüge zu anderen Teilgebieten
+MaLehr01_13	%Tempo der VL
+MaLehr01_14	%inhaltlicher Aufbau der Gesamt-VL
+MaLehr01_15	%empfinde Inhalte der VL
+MaLehr01_16	%Ich weiß, welches die zentralen Inhalte der VL sind.
+MaLehr01_17	%Meine Vorkenntnisse waren (de)
+MaLehr01_18	%Schwierigkeitsgrad der VL
+MaLehr01_19	%Schulbezug
+MaLehr01_20	%inhaltliche Überschneidungen (Frage)
+MaLehr01_21	%inhaltliche Überschneidungen (Kommentare)
+MaLehr01_22	%Raumgröße
+MaLehr01_23	%Raumausstattung
+MaLehr01_24	%Hilfsangebote und Betreuung über VL hinaus
+MaLehr01_25	%Ich bearbeite die Ü-Aufgaben.
+MaLehr01_26	%Abstimmung Ü-Aufgaben zu VL
+MaLehr01_27	%Anzahl Ü-Aufgaben
+MaLehr01_28	%Schwierigkeitsgrad Ü-Aufgaben
+MaLehr01_29	%Rückmeldungen zu Abgaben hilfreich
+MaLehr01_30	%Bewertung der Abgaben transparent
+MaLehr01_31	%Für mich lohnt sich die Bearbeitung der Ü-Aufgaben.
+MaLehr01_32	%Arbeitsaufwand
+MaLehr01_33	%Ich bewerte meine eigenen Leistungen als
+MaLehr01_34	%terminliche Überschneidungen (Frage)
+MaLehr01_35	%terminliche Überschneidungen (Kommentare)
+MaLehr01_36	%Ich bewerte die Veranstaltung insgesamt als
+MaLehr01_37	%Alles in allem: Für mich lohnt sich die Veranstaltung.
+MaLehr01_38	%Ich könnte die wichtigsten Inhalte und grundlegenden Konzepte jetzt auch jemand anderem erklären.
+%MaLehr01_39	%Kommentare LA
+
+% Bögen ab SS 15
+split MaUeb01_1
+section Übungsleiter/in: [MaUeb01_1]
+print Es haben [Teilnehmerzahl] Personen an dieser Umfrage teilgenommen.
+MaUeb01_2	%Führender Studiengang
+semester MaUeb01 %Semester (Bachelor/Diplom und Master fusioniert, deshalb muss man semester-Befehl verwenden)
+MaUeb01_5	%Raumgröße
+MaUeb01_12	%Ü-Leiter gut vorbereitet
+MaUeb01_13	%beherrscht den Stoff
+MaUeb01_14	%motiviert die Teilnehmer
+MaUeb01_15	%fördert Fragen und aktive Mitarbeit
+MaUeb01_16	%antwortet auf Fragen hilfreich
+MaUeb01_17	%ist an meinem Lernerfolg interessiert
+MaUeb01_18	%spricht klar und deutlich
+MaUeb01_19	%bewertet Ü-Aufgaben transparent
+MaUeb01_20	%gibt hilfreiche Rückmeldungen zu Abgaben
+MaUeb01_21	%Bedeutung und Nutzen der Aufgaben vermittelt
+MaUeb01_22	%Teilnehmer zum Vorführen eigener Lösungen ermuntert
+MaUeb01_23	%Klima der Übung
+MaUeb01_24	%Ich lerne auch im Bereich der Präsentation der Inhalte hinzu.
+MaUeb01_25	%Tempo der Übung
+MaUeb01_26	%Insgesamt bewerte ich den Ü-Leiter als
+MaUeb01_27	%Alles in allem: Für mich lohnt sich der Besuch der Ü
+%MaUeb01_28	%Kommentare Ü-Leiter
+unsplit
+
+% Bögen ab SS 15
+split MaTut01_1
+section Tutoriumsleiter/in: [MaTut01_1]
+print Es haben [Teilnehmerzahl] Personen an dieser Umfrage teilgenommen.
+MaTut01_2	%führender Studiengang
+MaTut01_3	%Semester
+MaTut01_4	%Raumgröße
+MaTut01_11	%Tut-Leiter wirkt gut vorbereitet
+MaTut01_12	%beherrscht den Stoff
+MaTut01_13	%motiviert Teilnehmer
+MaTut01_14	%fördert Fragen und aktive Mitarbeit
+MaTut01_15	%antwortet auf Fragen hilfreich
+MaTut01_16	%ist an meinem Lernerfolg interessiert
+MaTut01_17	%spricht klar und deutlich
+MaTut01_18	%Teilnehmer zum Vorführen eigener Lösungen ermuntert
+MaTut01_19	%Klima des Tutoriums
+MaTut01_20	%Tempo des Tutoriums
+MaTut01_21	%Insgesamt bewerte ich den Tut-Leiter als
+MaTut01_22	%Alles in allem: Für mich lohnt sich der Besuch des Tutoriums.
+%MaTut01_23	%Kommentare Tut-Leiter
+unsplit
+
+% Bögen ab SS 15
+split MaPrak01_1
+section Praktikumsbetreuer/in: [MaPrak01_1]
+print Es haben [Teilnehmerzahl] Personen an dieser Umfrage teilgenommen.
+MaPrak01_2	%führender Studiengang
+MaPrak01_3	%Semester
+MaPrak01_4	%Rechnerausstattung (Hard- und Software)
+MaPrak01_15	%Prak-Betreuer wirkt gut vorbereitet
+MaPrak01_16	%beherrscht den Stoff
+MaPrak01_17	%motiviert die Teilnehmer
+MaPrak01_18	%fördert Fragen
+MaPrak01_19	%antworten auf Fragen hilfreich
+MaPrak01_20	%ist an Lernerfolg interessiert
+MaPrak01_21	%bewertet Prak-Aufgaben transparent
+MaPrak01_22	%gibt hilfreiche Rückmeldungen zu Abgaben
+MaPrak01_23	%Bedeutung und Nutzen der Aufgaben
+MaPrak01_24	%Klima der betreuten Rechnerzeit
+MaPrak01_25	%Insgesamt bewerte ich den Prak-Betreuer als
+MaPrak01_26	%Alles in allem: Für mich lohnt sich...
+%MaPrak01_27	%Kommentare Prak-Betreuer
+unsplit
+
+
+%Übungsorga der EWP
+MaEwP01_1	%führender Studiengang
+MaEwP01_2	%Semester
+MaEwP01_3	%Rechnerausstattung
+MaEwP01_4	%besuche regelmäßig die VL
+filter MaEwP01_4 1 % die, die "ja" sagen
+append  (regelmäßig Teilnehmende)
+MaEwP01_5	%Abstimmung Ü-Aufgaben auf VL (regelmäßig Teilnehmende)
+unappend
+unfilter
+append  (insgesamt)
+MaEwP01_5	%Abstimmung Ü-Aufgaben auf VL (alle)
+unappend
+MaEwP01_6	%Ü-Aufgaben verständlich
+MaEwP01_7	%Anzahl Präsenzaufgaben
+MaEwP01_8	%Anzahl Hausaufgaben
+MaEwP01_9	%besuche regelmäßig Präsenzübung
+filter MaEwP01_9 1
+append  (regelmäßig Teilnehmende)
+MaEwP01_10	%Präsenzaufgaben bereiten auf Hausaufgaben vor (regelmäßig Teilnehmende)
+unappend
+unfilter
+append  (insgesamt)
+MaEwP01_10	%Präsenzaufgaben bereiten auf Hausaufgaben vor (alle)
+unappend
+MaEwP01_11	%Schwierigkeitsgrad Übungsaufgaben
+MaEwP01_12	%Skript ist hilfreich
+MaEwP01_13	%Ü-Leiter haben genügend Zeit, auf alle einzugehen
+MaEwP01_14	%Ich bewerte meine eigenen Leistungena als... 
+MaEwP01_15	%Für mich lohnt sich die Bearbeitung der Ü-Aufgaben.
+
+split MaEwP01_17 MaEwP01_32 %Ü-Leiter kann als erster oder zweiter angekreuzt sein, deshalb hier fusionieren
+section Übungsleiter [MaEwP01_17 MaEwP01_32]
+MaEwP01_1	%führender Studiengang
+MaEwP01_2	%Semester
+MaEwP01_18 MaEwP01_33	%Ü-Leiter wirkt gut vorbereitet
+MaEwP01_19 MaEwP01_34	%beherrscht den Stoff
+MaEwP01_20 MaEwP01_35	%motiviert Teilnehmer
+MaEwP01_21 MaEwP01_36	%fördert Fragen und aktive Mitarbeit
+MaEwP01_22 MaEwP01_37	%antwortet auf Fragen hilfreich
+MaEwP01_23 MaEwP01_38	%ist an meinem Lernerfolg interessiert
+MaEwP01_24 MaEwP01_39	%spricht klar und deutlich
+MaEwP01_25 MaEwP01_40	%bewertet Ü-Aufgaben transparent
+MaEwP01_26 MaEwP01_41	%gibt hilfreiche Rückmeldungen zu Abgaben
+MaEwP01_27 MaEwP01_42	%Bedeutung und Nutzen der Aufgaben vermittelt
+MaEwP01_28 MaEwP01_43	%Klima der Übung
+MaEwP01_29 MaEwP01_44	%Insgesamt bewerte ich den Ü-Leiter als
+MaEwP01_30 MaEwP01_45	%Alles in allem: Für mich lohnt sich...
+%MaEwP01_31 MaEwP01_46	%Kommentare Ü-Leiter
+unsplit

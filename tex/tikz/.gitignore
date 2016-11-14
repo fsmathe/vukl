@@ -1,0 +1,4 @@
+# .gitignore for folder containing externalized tikz figures
+*.dpth
+*.log
+*.md5

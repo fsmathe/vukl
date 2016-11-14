@@ -1,0 +1,15 @@
+#!/bin/bash
+# Generate diagrams from vukl.tex with run time linear in the number of diagrams
+# Parallelizes by simply generating lots of jobs
+set -e
+grep -E '^\\(skala|singlegraph|semester)\{' vukl.tex |\
+	while read -r line ; do
+		# For TeX there is always exactly one space after a command sequence and there are no multiple spaces so we use sed to achieve the same
+		hash=$(echo -n "$line"|sed 's/\(\\[A-Za-z]\+\)[[:space:]]*/\1 /g;s/[[:space:]]\+/ /g'|md5sum|cut -d\  -f1)
+		echo "Generates $hash.pdf from $line"
+		# Only build new file if it does not exist already
+		[ -f "tikz/$hash.pdf" ] || pdflatex -jobname "tikz/$hash" \
+			"\def\tikzexternalrealjob{vukl}\documentclass[tikzexternalize]{vukl}\begin{document}$line\end{document}" &
+	done
+# Wait for parallel jobs to finish
+wait
