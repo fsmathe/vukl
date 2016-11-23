@@ -57,11 +57,41 @@ def part_before_underscore(x_string_old):
     x_string_old_split = x_string_old.split('_')
     return x_string_old_split[0]
 
+# Forme eine Liste in Textform um.
+# Beispiel: [1,4,9,16] resultiert in '1, 4, 9 und 16'.
+# Nimmt an, dass die Liste mindestens ein Element enthält.
+def list_to_text(x_list):
+    x_string = ""
+    # ", " zwischen Auflistungspunkte setzen,
+    for item in x_list[:-1]:
+        x_string += item + ", "
+    # außer zwischen den letzten beiden, falls mehr als ein Punkt vorkommt,
+    if len(x_list) > 1:
+        # dort dann ", " durch " und " ersetzen.
+        x_string = x_string[:-2] + ' und '
+    # Schließlich letztes Element anfügen.
+    x_string += x_list[-1]
+    return x_string
+
+
+# Gesamtheit aller als wahr interpretierten Einträge einer Liste sortiert ausgeben.
+# Beispiel: [7,0,3,8,3,8] resultiert in [3,7,8].
+def sort_unique(x_list):
+    x_set = set()
+    for item in x_list:
+        if item[0]:
+            x_set.add(item[0])
+    return sorted(list(x_set))
 
 # x_keys = Liste an Schlüsseln für die ein Datensatz bestimmte Werte annehmen muss.
+#   Einträge hiervon können auch wiederum Listen sein für den Fall, dass ein Wert an
+#   verschiedenen Stellen stehen kann.
+#   Genutzt werden kann dies etwa, wenn eine Übung von mehreren 
+#   Stellen stehen können 
 # x_lv   = Liste, mit erlaubten Wertelisten für die entsprechenden Schlüssel in x_keys.
 # Gibt eine verundete WHERE-Klausel zurück
 # mit einem veroderten Eintrag für jede Werteliste in x_lv.
+#todo: Umschreiben mit ' IN (…)'
 def values_keys_to_string(x_lv, x_keys):
     result = " WHERE "
     if len(x_keys) == len(x_lv):
@@ -85,9 +115,11 @@ def values_keys_to_string(x_lv, x_keys):
 # x_keys = Liste an Schlüsseln für die ein Datensatz bestimmte Werte annehmen muss.
 # x_lv   = Liste, mit erlaubten Wertelisten für die entsprechenden Schlüssel in x_keys.
 # asserts len(x_keys)==len(x_lv)
-# Gibt eine Liste von Verundeten Ausdrücken zurück
+# Gibt eine Liste von verundeten Ausdrücken zurück
 # mit einem Eintrag für jede Kombination von Werten in x_lv.
 # Die Liste entspricht also $\bigtimes_{x\in x_lv} x$ in lexikographischer Ordnung.
+# Beispiel: values_keys_to_string_list(['A','B','C'],[['1','2'],'3',['5','6']]) resutltiert in
+# ['A=1 AND B=3 AND C=5','A=1 AND B=3 AND C=6','A=2 AND B=3 AND C=5','A=2 AND B=3 AND C=6']
 def values_keys_to_string_list(x_lv, x_keys):
     if len(x_lv)!=len(x_keys):
         print("values_keys_to_string_list: Es sollte genau so viele Schlüssel wie Werte geben!")
@@ -103,6 +135,13 @@ def values_keys_to_string_list(x_lv, x_keys):
     print("values_keys_to_string_list: Du hast es kaputt gemacht :(")
 
 
+# list_list_x = Liste von Listen der Form ['Tabelle_Nr',w_1,…,w_n],
+# wobei 'Tabelle' der Name einer Tabelle, `Q_Nr` ein Feld dieser Tabelle und
+# w_1,…,w_n mögliche Werte für `Q_Nr` sind.
+# Ergebnis ist ein String beginnend mit AND und bestehend aus AND-verknüpften
+# Bedingungen 'Q_Nr IN (w_1,…,w_n)' für jede Liste zur Tabelle x_table_name.
+# Beispiel: filter_to_string([['MaGVL01_1',1,4,9],['MaGVL01_3','foo'],['MaHVL01_5',2,4]],'MaGVL01')
+# gibt 'AND `Q_1` IN ('1','4','9') AND `Q_3` IN ('foo')'
 def filter_to_string(list_list_x, x_table_name):
     """Outputs a string for a list of filter rules"""
     result = ""
@@ -120,7 +159,7 @@ def filter_to_string(list_list_x, x_table_name):
 
 
 def choose_from_list(x_list):
-    """Gibt die nummerierten Elemente der Liste aus, fragt welches ausgewählt werden soll ->return string"""
+    """Gibt die nummerierten Elemente der Liste aus, fragt welches ausgewählt werden soll -> return string"""
     for i in range(len(x_list)):
         print("ID", i, ":\t", x_list[i])
     print("Bitte geben Sie die ID an:", end=" ")
@@ -128,54 +167,56 @@ def choose_from_list(x_list):
     return x_list[i]
 
 
+# Ersetzt in x_string Vorkommen von '[Stichwort]' oder aber '[Tabelle_Nr]' durch eine in Worten gefasste Liste
+# aller Einträge von `Q_Nr` in Tabelle; etwa um Personennamen oder Lehrveranstaltungsnamen auszugeben.
+# x_lv, x_keys werden an values_keys_to_string(_list|) und
+# x_list_filter wird an filter_to_string weitergereicht,
+# um eine Auswahl an Inhalten zu erhalten.
 def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
     result = x_string
-    for ersetzung in re.findall('\[[^][]*\]', x_string):
-        fragen = ersetzung[1:-1].split()
-        x_rohdaten = []
+    # Ersetzung von '[Tabelle_Nr]'
+    for ersetzung in re.findall('\[[^][]*\]', x_string): # Über alle Vorkommen von '[…]' iterieren
+        fragen = ersetzung[1:-1].split() # '[' und ']' rausschneiden
+        x_rohdaten = [] # Liste aller Einträge durch die '[…]' ersetzt werden soll
         if len(fragen) == 1:
+            # Falls ein '[Tabelle_Nr]' ersetzt werden soll:
             if fragen[0] in list_fragen:
+                # Lese Einträge zu `Q_Nr` in Tabelle entsprechend momentaner Auswahl
                 vukl_cursor.execute("SELECT `Q_" + part_after_underscore(fragen[0]) + "` FROM " + part_before_underscore(fragen[0])
-                                    + values_keys_to_string(x_lv, keys)
-                                    + filter_to_string(x_list_filter, part_before_underscore(fragen[0])))
+                                    + values_keys_to_string(x_lv, keys) # WHERE „ist passende Lehrveranstaltung“
+                                    + filter_to_string(x_list_filter, part_before_underscore(fragen[0]))) # AND „passt auf momentane Filter“
                 x_rohdaten = vukl_cursor.fetchall()
         else:
+            # Falls verschiedene Ergebnisse für verschiedene Lehrveranstaltungen kumuliert werden sollen:
             where_statements = values_keys_to_string_list(x_lv, x_keys)
             for i in range(len(fragen)):
+                # '[Tabelle1_x1 Tabelle2_x2 … Tabellen_xn]' mit Zahlen 'xi' ersetzen durch …
                 if fragen[0] in list_fragen:
+                    # Einträge zu `Q_xi` aus Tabellei für i-te Lehrveranstaltungs-Kombination auswählen.
                     vukl_cursor.execute('SELECT `Q_' + part_after_underscore(fragen[i]) +
                                         '` FROM ' + part_before_underscore(fragen[i]) +
                                         ' WHERE ' + where_statements[i][:-5])
                     x_rohdaten += vukl_cursor.fetchall()
-        if len(x_rohdaten) > 0:
-            x_set_rohdaten = set()
-            for item in x_rohdaten:
-                if item[0]:
-                    x_set_rohdaten.add(item[0])
-            x_rohdaten = sorted(list(x_set_rohdaten))
-            str_q_substitute = ""
-            for item in x_rohdaten[:-1]:
-                str_q_substitute += item + ", "
-            if len(x_rohdaten) > 1:
-                str_q_substitute = str_q_substitute[:-2] + ' und '
-            str_q_substitute += x_rohdaten[-1]
-            result = result.replace(ersetzung, str_q_substitute)
+        if len(x_rohdaten) > 0: # Falls es Ergebnisse gab …
+            # überall '[Tabelle_Nr]' durch die Gesamtheit aller Nicht-NULL-Einträge
+            # in x_rohdaten sortiert und in Textform ausgeben.
+            result = result.replace(ersetzung, list_to_text(sort_unique(x_rohdaten)))
     for keyword in ['Lehrveranstaltung', 'Subdozent', 'Studiengang', 'Teilbereich', 'Anrede', 'Titel', 'Vorname',
                     'Nachname', 'LVTyp', 'Vertiefungsgebiet', 'RaumTermin', 'Periode']:
-        if keyword in result:
+        if '['+keyword+']' in result:
             x_set_rohdaten = set()
             str_q_substitute = ""
             for table in table_names:
+                # Lese Einträge zu `keyword` in Tabelle entsprechend momentaner Auswahl
                 vukl_cursor.execute("SELECT " + keyword + " FROM " + table + values_keys_to_string(x_lv, x_keys)
                                     + filter_to_string(x_list_filter, table))
                 x_rohdaten = vukl_cursor.fetchall()
                 for item in x_rohdaten:
                     if item[0]:
                         x_set_rohdaten.add(item[0])
-            for item in x_set_rohdaten:
-                str_q_substitute += item + ", "
-            result = result.replace(('[' + keyword + ']'), str_q_substitute[:-2])
-    if '[Teilnehmerzahl]' in result:        # Gibt an wieviele Bögen maximal von einem Typ abgegeben wurden
+            if len(x_rohdaten) > 0: # Falls es Ergebnisse gab '[$keyword]' wie oben ersetzen.
+                result = result.replace(('[' + keyword + ']'), list_to_text(sorted(list(x_set_rohdaten))))
+    if '[Teilnehmerzahl]' in result:        # Gibt an, wieviele Bögen maximal von einem Typ abgegeben wurden
         max_zahl_teilnehmer = 0
         for table in table_names:
             vukl_cursor.execute("SELECT COUNT(*) FROM " + table + values_keys_to_string(x_lv, x_keys)
@@ -513,6 +554,7 @@ with vukl_db:
             vukl_cursor.execute("SELECT Periode, Lehrveranstaltung, Nachname, Vorname FROM " + part_before_underscore(frage)+ " WHERE `Q_" + part_after_underscore(frage) + "`='" + leiter + "'")
             list_leiterauswahl.extend(vukl_cursor.fetchall())
         set_leiterauswahl = set(list_leiterauswahl)
+        # Liste der Lehrveranstaltungen einschränken
         list_auswahl_lv = sorted(set_leiterauswahl)
         for frage in list_auswahlfragen:
             leiter_filter.append([frage, leiter])
@@ -551,7 +593,7 @@ with vukl_db:
             item_line = ((item_raw.split("%"))[0]).strip()
             if item_line.startswith("print"):                       # falls print wird Rest nicht gesplittet
                 list_scheme.append(("print",item_line[6:]))
-            elif item_line.startswith("append"):                   # dito
+            elif item_line.startswith("append"):                    # dito
                 list_scheme.append(("append",item_line[7:]))
             elif item_line.startswith("chapter"):                   # dito
                 list_scheme.append(("chapter",item_line[8:]))
@@ -573,4 +615,8 @@ with vukl_db:
 
 # # # # # LaTeX Datei schreiben, data_to_tex aufrufen
     with codecs.open("tex/vukl.tex", "w", encoding="utf-8") as tex_file:
+        # TeX-Code in tex_file schreiben, hierbei ist list_auswahl_lv eine Liste, deren Einträge die Form
+        # [Periode, Lehrveranstaltung, Nachname, Vorname] haben.
+        # Ferner ist list_scheme eine Liste, deren Einträge den Zeilen der scheme-Datei entsprechen.
+        # leiter_filter 
         data_to_tex(list_auswahl_lv, list_scheme, leiter_filter)
