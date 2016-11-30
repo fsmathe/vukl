@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 '''
     sets correct values for full names and titles in EvaSys import file
 '''

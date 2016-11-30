@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
 KIS2EvaSys - Umfragen aus KIS-Veranstaltungen anlegen
