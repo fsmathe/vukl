@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 """
 KIS2EvaSys - Umfragen aus KIS-Veranstaltungen anlegen
 """
@@ -11,6 +10,13 @@ Semester = "[SS16]"
 Evaluationsperiode = 28
 # URL von KIS -> Studiengänge und Veranstaltungen -> Elektrotechnik und Informationstechnik -> Elektrotechnik und Informationstechnik -> Dozent
 URL='http://www.kis.uni-kl.de/campus/all/eventlist.asp?gguid=0xB4AEA5931404C84A894AEB7A64B87A59&find=&mode=field&apps=&start=0&sort2=&sort=dozent&tguid=0x7709598EC4A0074C9686617A6FBB13F1'
+
+
+# Konstanten
+# generierte Datei zum EvaSys-Import
+EVASYS_IMPORT_FILENAME = "evasys.csv"
+# generiertes Vorlesungsverzeichnis
+VORLESUNGEN_FILENAME = "vorlesungen.csv"
 
 """
 # einfach die 3 Werte oben für das aktuelle Semester aktualieseren
@@ -56,6 +62,9 @@ class Vorlesung():
 		self.url = url
 		self.datum = datum
 
+
+
+''' Skript '''
 # list of events for EIT
 filehandle = urllib.urlopen(URL)
 text = filehandle.read()
@@ -138,7 +147,7 @@ for x in re_excerciseOrLecture:
 	print i, '/', len(re_excerciseOrLecture)
 	
 
-file = open("vorlesungen.csv","w")
+file = open(VORLESUNGEN_FILENAME,"w")
 for x in lecture:
 	line = "\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"" %(x.url, x.name, x.dozent, x.type, x.sprache)
 	for y in x.datum:
@@ -146,9 +155,9 @@ for x in lecture:
 		file.write(line)
 		line = "\"\";\"\";\"\";\"\";\"\""
 file.close()
-print "Datei vorlesungen.csv geschrieben"
+print("Datei " + VORLESUNGEN_FILENAME + " geschrieben")
 
-file = open("evasys.csv","w")
+file = open(EVASYS_IMPORT_FILENAME,"w")
 file.write("usertype|projectname|modulename|professional_title|title|firstname|surname|email|course_name|course_code|course_location|program_of_studies|course_type|course_participants|user_external_id|course_external_id|secondary_instructor_external_ids|module_course_position|module_course_main|course_period\n")
 for x in lecture:
         if x.dozent:
@@ -158,5 +167,5 @@ for x in lecture:
                         line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s [Übung] %s\"|\"%s-Ü\"|\"\"|\"EIT\"|\"4\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" %(x.dozent, x.mail, x.name, Semester, x.code, Evaluationsperiode)
                         file.write(line)
 file.close()
-print "Datei evasys.csv geschrieben"
+print("Datei " + EVASYS_IMPORT_FILENAME + " geschrieben")
 
