@@ -1,36 +1,39 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 """
 KIS Veranstaltungsliste -> EvaSys Umfragen und nach Liste der Veranstaltungen+Daten+Raum
 2016 (WS15/16) von Clemens Reibetanz (Ossi) geschrieben
-Man kann dieses Script nutzen oder es bleiben lassen, es darf verbreitet und veraendert werden, ohne jegliche Einschraenkungen
+Man kann dieses Script nutzen oder es bleiben lassen, es darf verbreitet und verändert werden, ohne jegliche Einschränkungen
 """
 
 # Bitte die 3 Werte eintragen
 Semester = "[SS16]"
 # 27=WS15/16, 28=SS16, ...
 Evaluationsperiode = 28
-# URL von KIS -> Studiengaenge und Veranstaltungen -> Elektrotechnik und Informationstechnik -> Elektrotechnik und Informationstechnik -> Dozent
+# URL von KIS -> Studiengänge und Veranstaltungen -> Elektrotechnik und Informationstechnik -> Elektrotechnik und Informationstechnik -> Dozent
 URL='http://www.kis.uni-kl.de/campus/all/eventlist.asp?gguid=0xB4AEA5931404C84A894AEB7A64B87A59&find=&mode=field&apps=&start=0&sort2=&sort=dozent&tguid=0x7709598EC4A0074C9686617A6FBB13F1'
 
 """
-# einfach die 3 Werte oben fuer das aktuelle Semester aktualieseren
-# dann dieses Script ausfuehren
+# einfach die 3 Werte oben für das aktuelle Semester aktualieseren
+# dann dieses Script ausführen
 
 # die herausfallende Datei (evasys.csv) dann wie folgend beschrieben bei befragung.uni-kl.de importieren
 
 # evasys
-# Teilbereiche -> Gesamtuebersicht -> Elektro- und Informationstechnik
-# ganz unten "Nutzerliste aus CSV-Datei importieren: evasys.csv (wird von diesem Programm erstellt) auswaehlen und importieren
+# Teilbereiche -> Gesamtübersicht -> Elektro- und Informationstechnik
+# ganz unten "Nutzerliste aus CSV-Datei importieren: evasys.csv (wird von diesem Programm erstellt) auswählen und importieren
 
-# Man muss normalerweise noch etwas nacharbeiten und uebungsleiter etc. eintragen, da die nie richtig im KIS stehen
-# Mehr als 1 Dozent geht auch nicht, da das anscheinend vom EvaSys nicht wirklich unterstuetzt wird
-# Am besten das geaenderte einfach in die CSV-Datei einragen bevor es ins EvaSys geladen wird.
-# Das EvaSys bietet nach dem Import auch noch die Moeglichkeit Dinge zu aendern
+# Man muss normalerweise noch etwas nacharbeiten und Übungsleiter etc. eintragen, da die nie richtig im KIS stehen
+# Mehr als 1 Dozent geht auch nicht, da das anscheinend vom EvaSys nicht wirklich unterstützt wird
+# Am besten das geänderte einfach in die CSV-Datei einragen bevor es ins EvaSys geladen wird.
+# Das EvaSys bietet nach dem Import auch noch die Möglichkeit Dinge zu ändern
 
-# Desweiteren faellt auch noch eine Datei vorlesungen.csv raus, die eine Liste der Vorlesungen, der Zeiten und der Raeume enthaelt
+# Desweiteren fällt auch noch eine Datei vorlesungen.csv raus, die eine Liste der Vorlesungen, der Zeiten und der Räume enthält
 
 # Hier geht das Programm nun los, es zeigt den Fortschritt in der Konsole
 # Es kann schon mal 5 Minuten dauern bis das durchgelaufen ist
-# Alles wird mit regulaeren Ausdruecken gemacht, sicher nicht optimal, aber immerhin eine Loesung
+# Alles wird mit regulären Ausdrücken gemacht, sicher nicht optimal, aber immerhin eine Lösung
 """
 
 import urllib
@@ -65,7 +68,7 @@ re_rows = re.findall(r"<tr class=\"blue[12]\">(.*?)</tr>", text, re.S)
 # get all lectures and excersices that are EIT
 re_excerciseOrLecture = []
 for x in re_rows:
-	if re.search(r"eventListTypeCol.*?>(.*?[Vue])", x, re.S) and re.search(r"<td name=\"eventListLVNRCol\".*?>((?:EIT).*?)<", x, re.S):
+	if re.search(r"eventListTypeCol.*?>(.*?[VÜ])", x, re.S) and re.search(r"<td name=\"eventListLVNRCol\".*?>((?:EIT).*?)<", x, re.S):
 		re_excerciseOrLecture.append(x)
 
 # for all of these events do the following
@@ -139,7 +142,7 @@ for x in re_excerciseOrLecture:
 
 file = open("vorlesungen.csv","w")
 for x in lecture:
-	line = "\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"" %(x.url, x.name, x.dozent, x.mail, x.type, x.sprache)
+	line = "\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"" %(x.url, x.name, x.dozent, x.type, x.sprache)
 	for y in x.datum:
 		line = "%s;\"%s\";\"%s\";\"%s\";\"%s\"\n" %(line, y.tag, y.beginn, y.ende, y.raum)
 		file.write(line)
@@ -153,8 +156,8 @@ for x in lecture:
         if x.dozent:
                 line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s %s\"|\"%s\"|\"\"|\"EIT\"|\"1\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" %(x.dozent, x.mail, x.name, Semester, x.code, Evaluationsperiode)
                 file.write(line)
-                if "ue" in x.type:
-                        line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s [uebung] %s\"|\"%s-ue\"|\"\"|\"EIT\"|\"4\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" %(x.dozent, x.mail, x.name, Semester, x.code, Evaluationsperiode)
+                if "Ü" in x.type:
+                        line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s [Übung] %s\"|\"%s-Ü\"|\"\"|\"EIT\"|\"4\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" %(x.dozent, x.mail, x.name, Semester, x.code, Evaluationsperiode)
                         file.write(line)
 file.close()
 print "Datei evasys.csv geschrieben"
