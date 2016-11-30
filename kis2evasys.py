@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-KIS Veranstaltungsliste -> EvaSys Umfragen und nach Liste der Veranstaltungen+Daten+Raum
-2016 (WS15/16) von Clemens Reibetanz (Ossi) geschrieben
-Man kann dieses Script nutzen oder es bleiben lassen, es darf verbreitet und verändert werden, ohne jegliche Einschränkungen
+KIS2EvaSys - Umfragen aus KIS-Veranstaltungen anlegen
 """
 
 # Bitte die 3 Werte eintragen
