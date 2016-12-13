@@ -6,17 +6,17 @@
 import csv
 
 # generated output file from kis2evasys
-INPUT_FILENAME = "csv/evasys.csv"
+INPUT_FILENAME = "data/evasys.csv"
 # file encoding for input file
 INPUT_FILE_ENCODING = "utf-8"
 
 # target filename for updated names and titles
-OUTPUT_FILENAME = "csv/final.csv"
+OUTPUT_FILENAME = "data/final.csv"
 # desired file encoding for output file
 OUTPUT_FILE_ENCODING = "latin-1"
 
 # a fresh export of all users from EvaSys with required personal data
-EXPORT_FILENAME = "csv/evasys-export.csv"
+EXPORT_FILENAME = "data/evasys-export.csv"
 # file encoding for EvaSys export file
 EXPORT_FILE_ENCODING = "utf-8"
 

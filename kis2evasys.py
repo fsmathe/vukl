@@ -4,6 +4,8 @@
 KIS2EvaSys - Umfragen aus KIS-Veranstaltungen anlegen
 """
 
+__author__ = "Clemens Reibetanz, Christian De Schryver"
+
 # Bitte die 3 Werte eintragen
 Semester = "[SS16]"
 # 27=WS15/16, 28=SS16, ...
@@ -13,18 +15,19 @@ URL = 'http://www.kis.uni-kl.de/campus/all/eventlist.asp?gguid=0xB4AEA5931404C84
 # KIS Zeichensatz wie im HTML-Meta-Tag festgelegt
 URLENCODING = "iso-8859-1"
 
-
 # Konstanten
+# Verzeichnis für CSV-Dateien
+DATA_DIRECTORY = "data/"
 # generierte Datei zum EvaSys-Import
-EVASYS_IMPORT_FILENAME = "evasys.csv"
+EVASYS_IMPORT_FILENAME = DATA_DIRECTORY + "evasys-import-raw.csv"
 # generiertes Vorlesungsverzeichnis
-VORLESUNGEN_FILENAME = "vorlesungen.csv"
+VORLESUNGEN_FILENAME = DATA_DIRECTORY + "vorlesungslistecsv"
 
 """
 # einfach die 3 Werte oben für das aktuelle Semester aktualieseren
 # dann dieses Script ausführen
 
-# die herausfallende Datei (evasys.csv) dann wie folgend beschrieben bei befragung.uni-kl.de importieren
+# die herausfallende Datei dann wie folgend beschrieben bei befragung.uni-kl.de importieren
 
 # evasys
 # Teilbereiche -> Gesamtübersicht -> Elektro- und Informationstechnik
@@ -42,8 +45,9 @@ VORLESUNGEN_FILENAME = "vorlesungen.csv"
 # Alles wird mit regulären Ausdrücken gemacht, sicher nicht optimal, aber immerhin eine Lösung
 """
 
-import urllib.request
 import re
+import urllib.request
+import os
 
 
 # our datastructure
@@ -68,6 +72,12 @@ class Vorlesung():
 
 
 ''' Skript '''
+
+# create data directory if not existing
+data_directory = os.path.dirname(EVASYS_IMPORT_FILENAME)
+if not os.path.exists(data_directory):
+	os.makedirs(data_directory)
+
 # list of events for EIT
 with urllib.request.urlopen(URL) as url:
 	text = url.read().decode(URLENCODING)
@@ -125,7 +135,7 @@ for x in re_excerciseOrLecture:
 
 	# find out when and where the event is, therefore open the subpage
 	urlofTimeAndDate = 'http://www.kis.uni-kl.de/campus/all/' + re.search(r"eventlink.*?href=\"(.*?)\">", x,
-																		  re.S).group(1)
+	                                                                      re.S).group(1)
 	urlOfLecture = urlofTimeAndDate
 	with urllib.request.urlopen(urlofTimeAndDate) as url:
 		textOfTimeAndDateSubpage = url.read().decode(URLENCODING)
@@ -169,7 +179,7 @@ for x in re_excerciseOrLecture:
 		#	print date
 	lecture.append(
 		Vorlesung(nameOfLecture, nameOfLecturer, mailOfLecturer, codeOfLecture, typeOfLecture, languageOfLecture,
-				  urlOfLecture, date))
+		          urlOfLecture, date))
 	i = i + 1
 	print
 	i, '/', len(re_excerciseOrLecture)
