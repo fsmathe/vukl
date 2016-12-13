@@ -21,17 +21,17 @@ DATA_DIRECTORY = "data/"
 # generierte Datei zum EvaSys-Import
 EVASYS_IMPORT_FILENAME = DATA_DIRECTORY + "evasys-import-raw.csv"
 # generiertes Vorlesungsverzeichnis
-VORLESUNGEN_FILENAME = DATA_DIRECTORY + "vorlesungslistecsv"
+VORLESUNGEN_FILENAME = DATA_DIRECTORY + "vorlesungsliste.csv"
 
 """
-# einfach die 3 Werte oben für das aktuelle Semester aktualieseren
+# einfach die 3 Werte oben für das aktuelle Semester aktualisieren
 # dann dieses Script ausführen
 
 # die herausfallende Datei dann wie folgend beschrieben bei befragung.uni-kl.de importieren
 
-# evasys
+# in EvaSys
 # Teilbereiche -> Gesamtübersicht -> Elektro- und Informationstechnik
-# ganz unten "Nutzerliste aus CSV-Datei importieren: evasys.csv (wird von diesem Programm erstellt) auswählen und importieren
+# ganz unten "Nutzerliste aus CSV-Datei importieren: generierte auswählen und importieren
 
 # Man muss normalerweise noch etwas nacharbeiten und Übungsleiter etc. eintragen, da die nie richtig im KIS stehen
 # Mehr als 1 Dozent geht auch nicht, da das anscheinend vom EvaSys nicht wirklich unterstützt wird
