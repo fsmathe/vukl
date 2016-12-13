@@ -1,24 +1,29 @@
 #!/usr/bin/python3
 '''
-    sets correct values for full names and titles in EvaSys import file
+	sets correct values for full names and titles in EvaSys import file
 '''
+
+__author__ = "Christian De Schryver"
 
 import csv
 
+# Verzeichnis für CSV-Dateien
+DATA_DIRECTORY = "data/"
+
 # generated output file from kis2evasys
-INPUT_FILENAME = "data/evasys.csv"
+INPUT_FILENAME = DATA_DIRECTORY + "evasys-import-raw.csv"
 # file encoding for input file
 INPUT_FILE_ENCODING = "utf-8"
 
 # target filename for updated names and titles
-OUTPUT_FILENAME = "data/final.csv"
+OUTPUT_FILENAME = DATA_DIRECTORY + "evasys-import-final.csv"
 # desired file encoding for output file
-OUTPUT_FILE_ENCODING = "latin-1"
+OUTPUT_FILE_ENCODING = "utf-8"
 
 # a fresh export of all users from EvaSys with required personal data
-EXPORT_FILENAME = "data/evasys-export.csv"
-# file encoding for EvaSys export file
-EXPORT_FILE_ENCODING = "utf-8"
+EXPORT_FILENAME = DATA_DIRECTORY + "evasys-export.csv"
+# file encoding for EvaSys export file (default: latin-1)
+EXPORT_FILE_ENCODING = "latin-1"
 
 # determine CSV dialect of input file
 with open(INPUT_FILENAME, "r", encoding=INPUT_FILE_ENCODING) as inputFile:
