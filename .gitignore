@@ -8,7 +8,22 @@
 *.toc
 *.maf
 *.mtc*
+
 # Various Data
 tex/vukl.tex
 csv/
 db/
+kis2evasys/data/
+
+# System Artifacts
+.DS_Store
+.idea
+._*
+*~.*
+\#*\#
+*~
+*.o
+*.bak
+.*.swp
+*.log
+a.out
