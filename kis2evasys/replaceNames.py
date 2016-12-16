@@ -33,7 +33,7 @@ INPUT_FILE_ENCODING = "utf-8"
 # target filename for updated names and titles
 OUTPUT_FILENAME = DATA_DIRECTORY + "evasys-import-final.csv"
 # desired file encoding for output file
-OUTPUT_FILE_ENCODING = "utf-8"
+OUTPUT_FILE_ENCODING = "latin-1"
 
 # a fresh export of all users from EvaSys with required personal data
 EXPORT_FILENAME = DATA_DIRECTORY + "evasys-export.csv"
@@ -46,6 +46,9 @@ with open(INPUT_FILENAME, "r", encoding=INPUT_FILE_ENCODING) as inputFile:
 
 # force quotes everywhere
 dialect.quoting = csv.QUOTE_ALL
+
+# set line endings to LF
+dialect.lineterminator = "\n"
 
 # add additional information for each person
 with open(INPUT_FILENAME, "r", encoding=INPUT_FILE_ENCODING) as inputFile:
