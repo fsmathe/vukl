@@ -35,6 +35,8 @@ URLENCODING = "iso-8859-1"
 DATA_DIRECTORY = "data/"
 # generierte Datei zum EvaSys-Import
 EVASYS_IMPORT_FILENAME = DATA_DIRECTORY + "evasys-import-raw.csv"
+# file encoding for generated EvaSys import file
+EVASYS_IMPORT_FILE_ENCODING = "utf-8"
 # generiertes Vorlesungsverzeichnis
 VORLESUNGEN_FILENAME = DATA_DIRECTORY + "vorlesungsliste.csv"
 
@@ -209,17 +211,16 @@ for x in lecture:
 file.close()
 print("Datei " + VORLESUNGEN_FILENAME + " geschrieben")
 
-file = open(EVASYS_IMPORT_FILENAME, "w")
-file.write(
-	"usertype|projectname|modulename|professional_title|title|firstname|surname|email|course_name|course_code|course_location|program_of_studies|course_type|course_participants|user_external_id|course_external_id|secondary_instructor_external_ids|module_course_position|module_course_main|course_period\n")
-for x in lecture:
-	if x.dozent:
-		line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s %s\"|\"%s\"|\"\"|\"EIT\"|\"1\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" % (
-			x.dozent, x.mail, x.name, Semester, x.code, Evaluationsperiode)
-		file.write(line)
-		if "Ü" in x.type:
-			line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s [Übung] %s\"|\"%s-Ü\"|\"\"|\"EIT\"|\"4\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" % (
+with open(EVASYS_IMPORT_FILENAME, "w", encoding=EVASYS_IMPORT_FILE_ENCODING) as file:
+	file.write(
+		"usertype|projectname|modulename|professional_title|title|firstname|surname|email|course_name|course_code|course_location|program_of_studies|course_type|course_participants|user_external_id|course_external_id|secondary_instructor_external_ids|module_course_position|module_course_main|course_period\n")
+	for x in lecture:
+		if x.dozent:
+			line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s %s\"|\"%s\"|\"\"|\"EIT\"|\"1\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" % (
 				x.dozent, x.mail, x.name, Semester, x.code, Evaluationsperiode)
 			file.write(line)
-file.close()
-print("Datei " + EVASYS_IMPORT_FILENAME + " geschrieben")
+			if "Ü" in x.type:
+				line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s [Übung] %s\"|\"%s-Ü\"|\"\"|\"EIT\"|\"4\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" % (
+					x.dozent, x.mail, x.name, Semester, x.code, Evaluationsperiode)
+				file.write(line)
+print("Datei " + EVASYS_IMPORT_FILENAME + " geschrieben, Encoding: " + EVASYS_IMPORT_FILE_ENCODING)
