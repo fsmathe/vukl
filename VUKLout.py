@@ -86,12 +86,12 @@ def sort_unique(x_list):
 # x_keys = Liste an Schlüsseln für die ein Datensatz bestimmte Werte annehmen muss.
 #   Einträge hiervon können auch wiederum Listen sein für den Fall, dass ein Wert an
 #   verschiedenen Stellen stehen kann.
-#   Genutzt werden kann dies etwa, wenn eine Übung von mehreren 
-#   Stellen stehen können 
-# x_lv   = Liste, mit erlaubten Wertelisten für die entsprechenden Schlüssel in x_keys.
-# Gibt eine verundete WHERE-Klausel zurück
-# mit einem veroderten Eintrag für jede Werteliste in x_lv.
-#todo: Umschreiben mit ' IN (…)'
+#   Genutzt werden kann dies etwa, wenn man an mehreren Stellen angeben kann, wer die
+#   Übungen gehalten hat, etwa weil man auf einem Bogen Rückmeldungen zu zwei Personen
+#   geben soll, die die Übung gemeinsam hielten.
+# x_lv   = Liste, mit erlaubten Werten für die entsprechenden Schlüssel in x_keys.
+# Gibt eine verundete WHERE-Klausel zurück mit jedem Eintrag
+# entweder 'Schlüssel=Wert' oder 'Wert IN (Schlüssel …)'
 def values_keys_to_string(x_lv, x_keys):
     result = " WHERE "
     if len(x_keys) == len(x_lv):
@@ -99,13 +99,13 @@ def values_keys_to_string(x_lv, x_keys):
             if isinstance(key, str):
                 result += key + "='" + x_lv[i] + "' AND "
             elif all(isinstance(item, str) for item in key):
-                result += "("
+                result += " '" + x_lv[i] + "' IN ("
                 for sub_key in key:
-                    result += sub_key + "='" + x_lv[i] + "' OR "
-                result = result[:-4] + ") AND "
+                    result += sub_key + ","
+                result = result[:-1] + ") AND "
                 multisplit_current_value = x_lv[i]
             else:
-                print("values_keys_to_string: Die OR Formulierung funktioniert nicht")
+                print("values_keys_to_string: Die Schluessel muessen Strings oder Listen von Strings sein.")
     else:
         print("values_keys_to_string: Die Anzahl stimmt nicht überein")
         return ""
@@ -227,7 +227,12 @@ def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
         result = result.replace('[Teilnehmerzahl]', str(max_zahl_teilnehmer))
     return result
 
-
+# list_x = Liste, mit Einträgen 0 bis range (und ignorierten weiteren Einträgen, z. B. NULL)
+# Beispiele:
+# raw_to_distribution([2,3,1,1,0,3,0,3,3,0], 3, false) ergibt '{{2}{1}{4}}'
+# raw_to_distribution([2,3,1,1,0,3,0,3,3,0], 2, false) ergibt '{{2}{1}}'
+# raw_to_distribution([2,3,1,1,0,3,0,3,3,0], 3, true ) ergibt '{3}{{2}{1}{4}}'
+# raw_to_distribution([2,3,1,1,0,3,0,3,3,0], 2, true ) ergibt '{3}{{2}{1}}'
 def raw_to_distribution(list_x, x_range, x_bool_neutral):
     """Outputs a string with the summed up values of all answers in the format
     {{number of 1s}{number of 2s}...} or {number of 0s}{{number of 1s}...}"""
@@ -298,6 +303,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
             # { D(<FrageAj>) | D(<FrageSj>) == $i UND j in 1..n UND D ein Datensatz gemäß der sonstigen Bedingungen },
             # wobei D(<FrageX>) der Wert von D bei der entsprechenden Frage ist
             # und die sonstigen Bedingungen durch Lehrveranstaltung und vorherige Splits und Filter gegeben sind.
+            # Genutzt wird dies etwa, wenn man mehrere verschiedene Personen auf einem Bogen bewerten soll.
             elif style[0] == 'split':
                 x_number_splits = 1         # wenn das aufgerufen wird, dann waren es vorher null splits
                 new_list_scheme = []
@@ -464,7 +470,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                 elif meta_dict['Type'] == 'Auswahl':
                     pass
                 else:
-                    print("Der 'Type' " + str(meta_dict['Type']) 
+                    print("Der 'Type' " + str(meta_dict['Type'])
                           + " ist bisher nicht vorgesehen in VUKLout. Die Auswertung der Frage wird daher ausgesetzt")
                     continue
             else:
@@ -548,14 +554,16 @@ with vukl_db:
             if item[2] == dozent[0] and item[3] == dozent[1]:
                 list_auswahl_lv.append(item)
     if typ_auswahl == 2:
+        # Eine_n Übungsleiter_in $leiter aus allen in der Datenbank auswählen.
         leiter = choose_from_list(list_auswahlwerte)
         list_leiterauswahl = []
         for frage in list_auswahlfragen:
             vukl_cursor.execute("SELECT Periode, Lehrveranstaltung, Nachname, Vorname FROM " + part_before_underscore(frage)+ " WHERE `Q_" + part_after_underscore(frage) + "`='" + leiter + "'")
             list_leiterauswahl.extend(vukl_cursor.fetchall())
         set_leiterauswahl = set(list_leiterauswahl)
-        # Liste der Lehrveranstaltungen einschränken
+        # Liste der Lehrveranstaltungen einschränken auf solche, in denen $leiter eine Übung leitet.
         list_auswahl_lv = sorted(set_leiterauswahl)
+        # leiter_filter auf [[frage, leiter] | frage in list_auswahlfragen] setzen.
         for frage in list_auswahlfragen:
             leiter_filter.append([frage, leiter])
     if typ_auswahl == 3:
@@ -618,5 +626,5 @@ with vukl_db:
         # TeX-Code in tex_file schreiben, hierbei ist list_auswahl_lv eine Liste, deren Einträge die Form
         # [Periode, Lehrveranstaltung, Nachname, Vorname] haben.
         # Ferner ist list_scheme eine Liste, deren Einträge den Zeilen der scheme-Datei entsprechen.
-        # leiter_filter 
+        # leiter_filter enthält Paare an Fragen und Name der_des Übungsleiter_in
         data_to_tex(list_auswahl_lv, list_scheme, leiter_filter)
