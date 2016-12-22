@@ -30,15 +30,16 @@ URL = 'http://www.kis.uni-kl.de/campus/all/eventlist.asp?gguid=0xB4AEA5931404C84
 # KIS Zeichensatz wie im HTML-Meta-Tag festgelegt
 URLENCODING = "iso-8859-1"
 
-# Konstanten
-# Verzeichnis für CSV-Dateien
+# directory for generated output files
 DATA_DIRECTORY = "data/"
-# generierte Datei zum EvaSys-Import
+# generated file for EvaSys import
 EVASYS_IMPORT_FILENAME = DATA_DIRECTORY + "evasys-import-raw.csv"
 # file encoding for generated EvaSys import file
 EVASYS_IMPORT_FILE_ENCODING = "utf-8"
-# generiertes Vorlesungsverzeichnis
-VORLESUNGEN_FILENAME = DATA_DIRECTORY + "vorlesungsliste.csv"
+# generated list of all courses
+COURSELIST_FILENAME = DATA_DIRECTORY + "vorlesungsliste.csv"
+# file encoding for course list
+COURSELIST_FILE_ENCODING = "utf-8"
 
 """
 # einfach die 3 Werte oben für das aktuelle Semester aktualisieren
@@ -96,16 +97,17 @@ if not os.path.exists(data_directory):
 	os.makedirs(data_directory)
 
 # list of events for EIT
+print("Reading KIS - URL: " + URL)
 with urllib.request.urlopen(URL) as url:
 	text = url.read().decode(URLENCODING)
 
 # get everything inside the list of events for EIT
 re_rows = re.findall(r"<tr class=\"blue[12]\">(.*?)</tr>", text, re.S)
 
-# get all lectures and excersices that are EIT
+# get all lectures and exercises that are EIT
 re_excerciseOrLecture = []
 for x in re_rows:
-	if re.search(r"eventListTypeCol.*?>(.*?[VÜ])", x, re.S) and re.search(
+	if re.search(r"eventListTypeCol.*?>(.*?[VÜS])", x, re.S) and re.search(
 			r"<td name=\"eventListLVNRCol\".*?>((?:EIT).*?)<", x, re.S):
 		re_excerciseOrLecture.append(x)
 
@@ -152,7 +154,7 @@ for x in re_excerciseOrLecture:
 
 	# find out when and where the event is, therefore open the subpage
 	urlofTimeAndDate = 'http://www.kis.uni-kl.de/campus/all/' + re.search(r"eventlink.*?href=\"(.*?)\">", x,
-																		  re.S).group(1)
+	                                                                      re.S).group(1)
 	urlOfLecture = urlofTimeAndDate
 	with urllib.request.urlopen(urlofTimeAndDate) as url:
 		textOfTimeAndDateSubpage = url.read().decode(URLENCODING)
@@ -191,17 +193,18 @@ for x in re_excerciseOrLecture:
 				room = ''
 			date.append(Datum(day, starttime, endtime, room))
 
-		#	print nameOfLecture.group(1)
-		#	print nameOfLecturer
-		#	print date
+			print("* " + nameOfLecture + " | " + nameOfLecturer + " | " + typeOfLecture)
 	lecture.append(
 		Vorlesung(nameOfLecture, nameOfLecturer, mailOfLecturer, codeOfLecture, typeOfLecture, languageOfLecture,
-				  urlOfLecture, date))
+		          urlOfLecture, date))
 	i = i + 1
 	print
 	i, '/', len(re_excerciseOrLecture)
+print("Finished grabbing and reading KIS...")
+print()
 
-file = open(VORLESUNGEN_FILENAME, "w")
+# write complete list of lectures
+file = open(COURSELIST_FILENAME, "w", encoding=COURSELIST_FILE_ENCODING)
 for x in lecture:
 	line = "\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"" % (x.url, x.name, x.dozent, x.type, x.sprache)
 	for y in x.datum:
@@ -209,18 +212,26 @@ for x in lecture:
 		file.write(line)
 		line = "\"\";\"\";\"\";\"\";\"\""
 file.close()
-print("Datei " + VORLESUNGEN_FILENAME + " geschrieben")
+print("File " + COURSELIST_FILENAME + " written, Encoding: " + COURSELIST_FILE_ENCODING)
 
+# write output file for EvaSys import
 with open(EVASYS_IMPORT_FILENAME, "w", encoding=EVASYS_IMPORT_FILE_ENCODING) as file:
 	file.write(
 		"usertype|projectname|modulename|professional_title|title|firstname|surname|email|course_name|course_code|course_location|program_of_studies|course_type|course_participants|user_external_id|course_external_id|secondary_instructor_external_ids|module_course_position|module_course_main|course_period\n")
 	for x in lecture:
 		if x.dozent:
-			line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s %s\"|\"%s\"|\"\"|\"EIT\"|\"1\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" % (
-				x.dozent, x.mail, x.name, SEMESTER, x.code, PERIOD)
-			file.write(line)
-			if "Ü" in x.type:
-				line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s [Übung] %s\"|\"%s-Ü\"|\"\"|\"EIT\"|\"4\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" % (
+			# seminars
+			if "S" in x.type:
+				line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s [Seminar] %s\"|\"%s-S\"|\"\"|\"EIT\"|\"2\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" % (
 					x.dozent, x.mail, x.name, SEMESTER, x.code, PERIOD)
 				file.write(line)
-print("Datei " + EVASYS_IMPORT_FILENAME + " geschrieben, Encoding: " + EVASYS_IMPORT_FILE_ENCODING)
+			# not a seminar
+			else:
+				line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s %s\"|\"%s\"|\"\"|\"EIT\"|\"1\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" % (
+					x.dozent, x.mail, x.name, SEMESTER, x.code, PERIOD)
+				file.write(line)
+				if "Ü" in x.type:
+					line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s [Übung] %s\"|\"%s-Ü\"|\"\"|\"EIT\"|\"4\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" % (
+						x.dozent, x.mail, x.name, SEMESTER, x.code, PERIOD)
+					file.write(line)
+print("File " + EVASYS_IMPORT_FILENAME + " written, Encoding: " + EVASYS_IMPORT_FILE_ENCODING)
