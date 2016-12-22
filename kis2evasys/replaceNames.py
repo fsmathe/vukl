@@ -25,7 +25,7 @@ import csv
 # Verzeichnis für CSV-Dateien
 DATA_DIRECTORY = "data/"
 
-# generated output file from kis2evasys
+# generated output file from kis2evasys (may be modified first)
 INPUT_FILENAME = DATA_DIRECTORY + "evasys-import-raw.csv"
 # file encoding for input file
 INPUT_FILE_ENCODING = "utf-8"
@@ -40,19 +40,21 @@ EXPORT_FILENAME = DATA_DIRECTORY + "evasys-export.csv"
 # file encoding for EvaSys export file (default: latin-1)
 EXPORT_FILE_ENCODING = "latin-1"
 
-# determine CSV dialect of input file
-with open(INPUT_FILENAME, "r", encoding=INPUT_FILE_ENCODING) as inputFile:
-	dialect = csv.Sniffer().sniff(inputFile.read(1024))
-
+# determine required dialect for EvaSys import from EvaSys export file
+with open(EXPORT_FILENAME, "r", encoding=EXPORT_FILE_ENCODING) as exportFile:
+	dialect = csv.Sniffer().sniff(exportFile.read(1024))
 # force quotes everywhere
 dialect.quoting = csv.QUOTE_ALL
-
-# set line endings to LF
+# set line endings to LF independent of OS default
 dialect.lineterminator = "\n"
+
+# determine dialect of input file
+with open(INPUT_FILENAME, "r", encoding=INPUT_FILE_ENCODING) as inputFile:
+	inputDialect = csv.Sniffer().sniff(inputFile.read(1024))
 
 # add additional information for each person
 with open(INPUT_FILENAME, "r", encoding=INPUT_FILE_ENCODING) as inputFile:
-	inputReader = csv.reader(inputFile, dialect)
+	inputReader = csv.reader(inputFile, inputDialect)
 	with open(OUTPUT_FILENAME, "w", encoding=OUTPUT_FILE_ENCODING) as outputFile:
 		outputWriter = csv.writer(outputFile, dialect)
 
