@@ -22,9 +22,9 @@ KIS2EvaSys - Umfragen aus KIS-Veranstaltungen anlegen
 __author__ = "Clemens Reibetanz, Christian De Schryver"
 
 # Bitte die 3 Werte eintragen
-Semester = "[SS16]"
-# 27=WS15/16, 28=SS16, ...
-Evaluationsperiode = 28
+SEMESTER = "[SS16]"
+# 27=WS15/16, 28=SS16, 29=WS16/17, 30=SS17
+PERIOD = 28
 # URL von KIS -> Studiengänge und Veranstaltungen -> Elektrotechnik und Informationstechnik -> Elektrotechnik und Informationstechnik -> Dozent
 URL = 'http://www.kis.uni-kl.de/campus/all/eventlist.asp?gguid=0xB4AEA5931404C84A894AEB7A64B87A59&find=&mode=field&apps=&start=0&sort2=&sort=dozent&tguid=0x7709598EC4A0074C9686617A6FBB13F1'
 # KIS Zeichensatz wie im HTML-Meta-Tag festgelegt
@@ -128,7 +128,7 @@ for x in re_excerciseOrLecture:
 	else:
 		nameOfLecture = ''
 	if codeOfLecture:
-		codeOfLecture = codeOfLecture.group(1)
+		codeOfLecture = codeOfLecture.group(1) + "-" + SEMESTER  # needs to be unique
 	else:
 		codeOfLecture = ''
 	if typeOfLecture:
@@ -152,7 +152,7 @@ for x in re_excerciseOrLecture:
 
 	# find out when and where the event is, therefore open the subpage
 	urlofTimeAndDate = 'http://www.kis.uni-kl.de/campus/all/' + re.search(r"eventlink.*?href=\"(.*?)\">", x,
-	                                                                      re.S).group(1)
+																		  re.S).group(1)
 	urlOfLecture = urlofTimeAndDate
 	with urllib.request.urlopen(urlofTimeAndDate) as url:
 		textOfTimeAndDateSubpage = url.read().decode(URLENCODING)
@@ -196,7 +196,7 @@ for x in re_excerciseOrLecture:
 		#	print date
 	lecture.append(
 		Vorlesung(nameOfLecture, nameOfLecturer, mailOfLecturer, codeOfLecture, typeOfLecture, languageOfLecture,
-		          urlOfLecture, date))
+				  urlOfLecture, date))
 	i = i + 1
 	print
 	i, '/', len(re_excerciseOrLecture)
@@ -217,10 +217,10 @@ with open(EVASYS_IMPORT_FILENAME, "w", encoding=EVASYS_IMPORT_FILE_ENCODING) as 
 	for x in lecture:
 		if x.dozent:
 			line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s %s\"|\"%s\"|\"\"|\"EIT\"|\"1\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" % (
-				x.dozent, x.mail, x.name, Semester, x.code, Evaluationsperiode)
+				x.dozent, x.mail, x.name, SEMESTER, x.code, PERIOD)
 			file.write(line)
 			if "Ü" in x.type:
 				line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s [Übung] %s\"|\"%s-Ü\"|\"\"|\"EIT\"|\"4\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" % (
-					x.dozent, x.mail, x.name, Semester, x.code, Evaluationsperiode)
+					x.dozent, x.mail, x.name, SEMESTER, x.code, PERIOD)
 				file.write(line)
 print("Datei " + EVASYS_IMPORT_FILENAME + " geschrieben, Encoding: " + EVASYS_IMPORT_FILE_ENCODING)
