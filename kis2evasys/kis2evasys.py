@@ -22,11 +22,11 @@ KIS2EvaSys - Umfragen aus KIS-Veranstaltungen anlegen
 __author__ = "Clemens Reibetanz, Christian De Schryver"
 
 # Bitte die 3 Werte eintragen
-SEMESTER = "[SS16]"
+SEMESTER = "[WS16/17]"
 # 27=WS15/16, 28=SS16, 29=WS16/17, 30=SS17
-PERIOD = 28
+PERIOD = 29
 # URL von KIS -> Studiengänge und Veranstaltungen -> Elektrotechnik und Informationstechnik -> Elektrotechnik und Informationstechnik -> Dozent
-URL = 'http://www.kis.uni-kl.de/campus/all/eventlist.asp?gguid=0xB4AEA5931404C84A894AEB7A64B87A59&find=&mode=field&apps=&start=0&sort2=&sort=dozent&tguid=0x7709598EC4A0074C9686617A6FBB13F1'
+URL = 'http://www.kis.uni-kl.de/campus/all/eventlist.asp?mode=field&gguid=0xFA55C0FA8922324FBE140B703F1FBE45&tguid=0x5CD863108B761F4CB159DA9ABDCAAAE8'
 # KIS Zeichensatz wie im HTML-Meta-Tag festgelegt
 URLENCODING = "iso-8859-1"
 
@@ -220,8 +220,8 @@ with open(EVASYS_IMPORT_FILENAME, "w", encoding=EVASYS_IMPORT_FILE_ENCODING) as 
 		"usertype|projectname|modulename|professional_title|title|firstname|surname|email|course_name|course_code|course_location|program_of_studies|course_type|course_participants|user_external_id|course_external_id|secondary_instructor_external_ids|module_course_position|module_course_main|course_period\n")
 	for x in lecture:
 		if x.dozent:
-			# seminars
-			if "S" in x.type:
+			# seminars: only consider first three characters of type string - type is specified there
+			if "S" in x.type[0:3]:
 				line = "\"dozent\"||||||\"%s\"|\"%s\"|\"%s [Seminar] %s\"|\"%s-S\"|\"\"|\"EIT\"|\"2\"|\"0\"|\"\"|\"\"|\"\"|||\"%s\"|\n" % (
 					x.dozent, x.mail, x.name, SEMESTER, x.code, PERIOD)
 				file.write(line)
