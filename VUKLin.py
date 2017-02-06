@@ -86,9 +86,9 @@ with codecs.open(CSV_DIRECTORY + csv_file_name, "r", encoding=CSV_FILE_ENCODING)
     headline_split_with_quote = [x.strip() for x in headline.split(CSV_DELIMINITER)]
     headline_split = [cut_quote(x) for x in headline_split_with_quote]
     if headline_split[-1] == "Datensatz-Ursprung" and headline_split[-2] == "Zeitstempel":
-        anzahl_fragen = len(headline_split) - 16
+        anzahl_fragen = len(headline_split) - 17
     elif headline_split[-1] == "Datensatz-Ursprung":
-        anzahl_fragen = len(headline_split) - 15
+        anzahl_fragen = len(headline_split) - 16
     else:
         print("Die Kopfzeile der Datei hat als letzten Eintrag nicht 'Datensatz-Ursprung' wie bisher, "
               "da Electric Paper den Export geändert hat. Der Python Code muss an dieser Stelle angepasst werden."
