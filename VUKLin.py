@@ -144,7 +144,7 @@ db_table_name = input(
 # # # # # Neue Tabelle einfügen
 if (db_table_name,) not in table_names:
     print("Eine neue Tabelle", db_table_name, "wird erstellt.")
-    str_create_table = "CREATE TABLE " + db_table_name + " ("
+    str_create_table = "CREATE TABLE " + repr(db_table_name) + " ("
     for key in keys:
         str_create_table = str_create_table + " " + key + ",\n"
     str_create_table = str_create_table[0:-2] + ");"
@@ -201,7 +201,7 @@ for lv in lv_list:
     #        #TODO: hier passend aus der for iteration rausgehen, sonst müsste alles im else stattfinden ...
     with vukl_db:
         vukl_cursor = vukl_db.cursor()
-        vukl_cursor.execute("SELECT Bogen FROM " + db_table_name + " WHERE Lehrveranstaltung='" + lv_namedeutsch
+        vukl_cursor.execute("SELECT Bogen FROM " + repr(db_table_name) + " WHERE Lehrveranstaltung='" + lv_namedeutsch
                             + "' AND Vorname='" + lv[1] + "' AND Nachname='" + lv[2] + "' AND Periode='" + lv[3] + "'")
         db_sheetnumbers_list_list = vukl_cursor.fetchall()
         for row in db_sheetnumbers_list_list:
@@ -256,7 +256,7 @@ for lv in lv_list:
 
     # # # # # Bögen aus DB rauslöschen
     for bogen_nummer in set_delete:
-        str_exec_delete = "DELETE FROM " + db_table_name + " WHERE Lehrveranstaltung='" + lv_namedeutsch \
+        str_exec_delete = "DELETE FROM " + repr(db_table_name) + " WHERE Lehrveranstaltung='" + lv_namedeutsch \
                           + "' AND Vorname='" + lv[1] + "' AND Nachname='" + lv[2] \
                           + "' AND Periode='" + lv[3] + "' AND Bogen IN ('"
         for item in set_delete:
@@ -303,7 +303,7 @@ for lv in lv_list:
             for row in lv_dictlist:
                 if row["Q_" + str(auswahl_frage)] == str(wert):
                     row["Q_" + str(auswahl_frage)] = ersatz_text
-    str_import_dict = "INSERT INTO " + db_table_name + " ("
+    str_import_dict = "INSERT INTO " + repr(db_table_name) + " ("
     # Get list of question IDs like (Q_1, Q_2, …, Q_17, Q_18-de, Q_19, …)
     vukl_cursor.execute("SELECT replace(ID,'" + db_table_name + "','Q') FROM meta " + \
                         # Find non-standard question IDs that look like 'Q_18-de' …
