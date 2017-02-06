@@ -26,7 +26,17 @@ import codecs
 import time
 import readline
 
-csv_delim = '\t'
+####### SETTINGS #######
+
+# input csv file
+CSV_DELIMINITER = '|'
+CSV_FILE_ENCODING = 'latin-1'
+CSV_DIRECTORY = 'csv/'
+
+# database
+DB_FILE = 'db/vukl.db'
+
+########################
 
 
 def cut_quote(any_str):
@@ -40,9 +50,9 @@ def cut_quote(any_str):
 print("### \t VUKLin \t ###")
 print("\t Einleseroutine von VUKL \n")
 # # # # # csv-Datei als csv_file öffnen
-print("Folgende Dateien wurden im Ordner 'csv' gefunden:")
+print("Folgende Dateien wurden im Ordner " + CSV_DIRECTORY + "gefunden:")
 bool_nocsvfile = True
-for file in os.listdir('csv/'):
+for file in os.listdir(CSV_DIRECTORY):
     if file.endswith('.csv'):
         print("\t", file)
         bool_nocsvfile = False
@@ -59,10 +69,10 @@ if csv_language != 'en':
     csv_language = 'de'
 # # # # # csv in dictlist einlesen
 start_time = time.time()
-with codecs.open("csv/" + csv_file_name, "r", encoding='latin-1') as csv_file:
+with codecs.open(CSV_DIRECTORY + csv_file_name, "r", encoding=CSV_FILE_ENCODING) as csv_file:
     # hier muss auch ggf die Kodierung der Datei geändert werden zB utf-8
     headline = csv_file.readline()
-    headline_split_with_quote = [x.strip() for x in headline.split(csv_delim)]
+    headline_split_with_quote = [x.strip() for x in headline.split(CSV_DELIMINITER)]
     headline_split = [cut_quote(x) for x in headline_split_with_quote]
     if headline_split[-1] == "Datensatz-Ursprung" and headline_split[-2] == "Zeitstempel":
         anzahl_fragen = len(headline_split) - 16
@@ -84,7 +94,7 @@ with codecs.open("csv/" + csv_file_name, "r", encoding='latin-1') as csv_file:
     keys = tuple(keys_list)
     dictlist = []
     for row in csv_file:
-        csv_datarow_with_quote = [x.strip() for x in row.split(csv_delim)]
+        csv_datarow_with_quote = [x.strip() for x in row.split(CSV_DELIMINITER)]
         csv_datarow = [cut_quote(x) for x in csv_datarow_with_quote]
         if len(csv_datarow) == len(headline_split):
             csv_to_dict_datarow = [csv_datarow[0], csv_datarow[1], csv_datarow[2], csv_datarow[3], csv_datarow[4],
@@ -105,7 +115,8 @@ for row in dictlist:
 print("Hat solange gedauert die Datei in dictlist zu speichern: " + str(end_time))
 
 # # # # # Datenbanktabelle aussuchen
-vukl_db = sqlite3.connect('db/vukl.db')
+# TODO: create database if not existing
+vukl_db = sqlite3.connect(DB_FILE)
 with vukl_db:
     vukl_cursor = vukl_db.cursor()
     vukl_cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
