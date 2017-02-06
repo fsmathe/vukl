@@ -26,15 +26,32 @@ import codecs
 import readline
 import re
 
-# TODO: global settings for all constants
+####### SETTINGS #######
 
-# -#-#-#-        Definition globaler Konstanten
+# database
+DB_FILE = 'db/vukl.db'
+
+# output schemes
+SCHEME_FOLDER = 'scheme/'
+SCHEME_FILE_ENCODING = 'utf-8-sig'
+
+# LaTeX output file
+LATEX_OUTPUT_FILE_NAME = "tex/vukl.tex"
+LATEX_OUTPUT_FILE_ENCODING = "utf-8"
+
+# TODO: refactor to capital names
 const_lbgeneral = 5  # Bei weniger Teilnehmenden wird generell keine Auswertung erstellt
 const_lbvorlesung = 8  # Bei weniger Teilnehmenden wird zu den folgenden Veranstaltungen keine Auswertung erstellt
 const_vorlesung = 'Ma[GH](Vor|VL\d\d)'  # Regulärer Ausdruck (matcht etwa MaHVor oder MaGVL01)
 str_language = "de"
 multisplit_current_value = "DUMMY"
 multisplit_questions = []
+
+
+########################
+
+
+
 
 
 def proper_input(x_n):
@@ -490,7 +507,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
     return 0
 
 
-vukl_db = sqlite3.connect('db/vukl.db')
+vukl_db = sqlite3.connect(DB_FILE)
 with vukl_db:
     vukl_cursor = vukl_db.cursor()
     # # # # # table_names: Enthält die Namen aller Fragebögen
@@ -596,7 +613,7 @@ with vukl_db:
     # # # # # list_scheme: Enthält das Auswertungsschema als listlist schon passend aufgeteilt
     print("\nDiese Auswertungsschemata stehen zur Verfügung")
     bool_noschemefile = True
-    for file in os.listdir('scheme/'):
+    for file in os.listdir(SCHEME_FOLDER):
         if file.endswith('.txt'):
             print("\t", file[:-4])
             bool_noschemefile = False
@@ -608,7 +625,7 @@ with vukl_db:
     if scheme_file_name.count('.') == 0:  # falls kein Punkt im Namen enthalten ist, so wird automatisch '.csv'
         #  ergänzt; andere 'Fehler'berichtigung gibt es nicht
         scheme_file_name += '.txt'
-    with codecs.open("scheme/" + scheme_file_name, "r", encoding="utf-8-sig") as scheme_file:
+    with codecs.open(SCHEME_FOLDER + scheme_file_name, "r", encoding=SCHEME_FILE_ENCODING) as scheme_file:
         list_scheme_raw = list(scheme_file)
         list_scheme = []
         for item_raw in list_scheme_raw:
@@ -636,7 +653,7 @@ with vukl_db:
                 list_scheme.append(item)
 
                 # # # # # LaTeX Datei schreiben, data_to_tex aufrufen
-    with codecs.open("tex/vukl.tex", "w", encoding="utf-8") as tex_file:
+    with codecs.open(LATEX_OUTPUT_FILE_NAME, "w", encoding=LATEX_OUTPUT_FILE_ENCODING) as tex_file:
         # TeX-Code in tex_file schreiben, hierbei ist list_auswahl_lv eine Liste, deren Einträge die Form
         # [Periode, Lehrveranstaltung, Nachname, Vorname] haben.
         # Ferner ist list_scheme eine Liste, deren Einträge den Zeilen der scheme-Datei entsprechen.
