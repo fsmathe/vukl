@@ -26,6 +26,8 @@ import codecs
 import readline
 import re
 
+# TODO: global settings for all constants
+
 # -#-#-#-        Definition globaler Konstanten
 const_lbgeneral = 5  # Bei weniger Teilnehmenden wird generell keine Auswertung erstellt
 const_lbvorlesung = 8  # Bei weniger Teilnehmenden wird zu den folgenden Veranstaltungen keine Auswertung erstellt
@@ -414,7 +416,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                     # Bestimmt mittels globaler Variable `multisplit_current_value`, welche der Fragen <FrageA>, <FrageB>, ... den momentanen Wert annimmt.
                     where_statements = values_keys_to_string_list(lv, keys)
                     rohdaten_q_raw = []
-                    for i in range(len(style)):
+                    for i in range(len(style)-1):
                         vukl_cursor.execute('SELECT `Q_' + part_after_underscore(style[i]) +
                                             '` FROM ' + repr(part_before_underscore(style[i])) +
                                             ' WHERE ' + where_statements[i][:-5])
