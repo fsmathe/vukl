@@ -108,9 +108,12 @@ with codecs.open(CSV_DIRECTORY + csv_file_name, "r", encoding=CSV_FILE_ENCODING)
         csv_datarow_with_quote = [x.strip() for x in row.split(CSV_DELIMINITER)]
         csv_datarow = [cut_quote(x) for x in csv_datarow_with_quote]
         if len(csv_datarow) == len(headline_split):
+            # TODO: 2017-02-06 changed last entry to csv_datarow[15:15 + anzahl_fragen]
+            # due to additional field "Seriendruck-ID" in CSV import file
+            # (was csv_datarow[14:14 + anzahl_fragen]
             csv_to_dict_datarow = [csv_datarow[0], csv_datarow[1], csv_datarow[2], csv_datarow[3], csv_datarow[4],
                                    csv_datarow[5], csv_datarow[5], '', '', csv_datarow[12], '', '', '',
-                                   csv_datarow[-1], csv_language + csv_datarow[13]] + csv_datarow[14:14 + anzahl_fragen]
+                                   csv_datarow[-1], csv_language + csv_datarow[13]] + csv_datarow[15:15 + anzahl_fragen]
             dictlist.append(dict(zip(keys, tuple(csv_to_dict_datarow))))
         else:
             print("Folgende Zeile hat nicht die passende Anzahl an Feldern/Tabulatoren "
