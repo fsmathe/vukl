@@ -51,7 +51,7 @@ print("### \t VUKLin \t ###")
 print("\t Einleseroutine von VUKL \n")
 
 # ask for CSV input file if not passed as command line argument
-if sys.argv == 0 and os.path.isfile(sys.argv[0]):
+if len(sys.argv) == 1 and os.path.isfile(sys.argv[0]):
     print("Folgende Dateien wurden im Ordner " + CSV_DIRECTORY + "gefunden:")
     bool_nocsvfile = True
     for file in os.listdir(CSV_DIRECTORY):
