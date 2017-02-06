@@ -59,8 +59,8 @@ if csv_language != 'en':
     csv_language = 'de'
 # # # # # csv in dictlist einlesen
 start_time = time.time()
-with codecs.open("csv/"+csv_file_name, "r", encoding='latin-1') as csv_file:
-# hier muss auch ggf die Kodierung der Datei geändert werden zB utf-8
+with codecs.open("csv/" + csv_file_name, "r", encoding='latin-1') as csv_file:
+    # hier muss auch ggf die Kodierung der Datei geändert werden zB utf-8
     headline = csv_file.readline()
     headline_split_with_quote = [x.strip() for x in headline.split(csv_delim)]
     headline_split = [cut_quote(x) for x in headline_split_with_quote]
@@ -80,7 +80,7 @@ with codecs.open("csv/"+csv_file_name, "r", encoding='latin-1') as csv_file:
                  'Periode', 'Studiengang', 'LVTyp',
                  'Vertiefungsgebiet', 'DatensatzUrsprung', 'Bogen']
     for i in range(anzahl_fragen):
-        keys_list.append('Q_' + str(i+1))
+        keys_list.append('Q_' + str(i + 1))
     keys = tuple(keys_list)
     dictlist = []
     for row in csv_file:
@@ -89,7 +89,7 @@ with codecs.open("csv/"+csv_file_name, "r", encoding='latin-1') as csv_file:
         if len(csv_datarow) == len(headline_split):
             csv_to_dict_datarow = [csv_datarow[0], csv_datarow[1], csv_datarow[2], csv_datarow[3], csv_datarow[4],
                                    csv_datarow[5], csv_datarow[5], '', '', csv_datarow[12], '', '', '',
-                                   csv_datarow[-1], csv_language + csv_datarow[13]] + csv_datarow[14:14+anzahl_fragen]
+                                   csv_datarow[-1], csv_language + csv_datarow[13]] + csv_datarow[14:14 + anzahl_fragen]
             dictlist.append(dict(zip(keys, tuple(csv_to_dict_datarow))))
         else:
             print("Folgende Zeile hat nicht die passende Anzahl an Feldern/Tabulatoren "
@@ -116,7 +116,8 @@ for table in table_names:
         print("\t", table[0])
 if not table_names:
     print("-> Keine Tabelle vorhanden!")
-db_table_name = input("Welcher Tabelle sollen die Daten angefügt werden, bzw. wie soll die neue Tabelle genannt werden? ")
+db_table_name = input(
+    "Welcher Tabelle sollen die Daten angefügt werden, bzw. wie soll die neue Tabelle genannt werden? ")
 
 # # # # # Neue Tabelle einfügen
 if (db_table_name,) not in table_names:
@@ -132,7 +133,7 @@ if (db_table_name,) not in table_names:
     sys.exit(0)
 
 # # # # # Überprüfung ob die Daten zu den Metainformationen des Fragebogens passen
-#TODO SPALTENWEISE Konsistenzprüfung zwischen csv und Tabelle (Anzahl Fragen, Werte in Fragen usw...)
+# TODO SPALTENWEISE Konsistenzprüfung zwischen csv und Tabelle (Anzahl Fragen, Werte in Fragen usw...)
 
 # # # # #
 with vukl_db:
@@ -143,7 +144,6 @@ with vukl_db:
     for row in id_auswahl_fragen_alle:
         if row[0].startswith(db_table_name):
             id_auswahl_fragen.append(int((row[0].replace(db_table_name, '')[1:])))
-
 
 # # # # # Für jede Veranstaltung einzeln: Vervollständigung/Korrektur der Daten - ohne Fragen
 print("Nun werden die Angaben zu den einzelnen Lehrveranstaltungen "
@@ -172,11 +172,11 @@ for lv in lv_list:
     lv_nameenglisch = lv_namedeutsch
 
     csv_sheetnumbers = set(csv_sheetnumbers_list)
-#    if not len(csv_sheetnumbers) == len(csv_sheetnumbers_list):
-#        print("Die Veranstaltung enthält " + str(len(csv_sheetnumbers_list)-len(csv_sheetnumbers))
-#              + " Duplikate (gleiche Bogennummer)." )
-#        print("Der Import dieser LV wird ausgesetzt.")
-#        #TODO: hier passend aus der for iteration rausgehen, sonst müsste alles im else stattfinden ...
+    #    if not len(csv_sheetnumbers) == len(csv_sheetnumbers_list):
+    #        print("Die Veranstaltung enthält " + str(len(csv_sheetnumbers_list)-len(csv_sheetnumbers))
+    #              + " Duplikate (gleiche Bogennummer)." )
+    #        print("Der Import dieser LV wird ausgesetzt.")
+    #        #TODO: hier passend aus der for iteration rausgehen, sonst müsste alles im else stattfinden ...
     with vukl_db:
         vukl_cursor = vukl_db.cursor()
         vukl_cursor.execute("SELECT Bogen FROM " + db_table_name + " WHERE Lehrveranstaltung='" + lv_namedeutsch
@@ -188,7 +188,7 @@ for lv in lv_list:
 
     set_delete = set()
     set_import = set()
-    if not db_sheetnumbers:     # means empty set
+    if not db_sheetnumbers:  # means empty set
         print("\tEs liegen noch keine Daten zu dieser Veranstaltung vor, also werden alle Daten importiert")
         set_delete = db_sheetnumbers
         set_import = csv_sheetnumbers
@@ -228,11 +228,11 @@ for lv in lv_list:
               "und der Schnitt ist auch nicht leer. Wie kann das denn passieren?")
         print("Es wird nichts importiert. Wahrscheinlich ist das die falsche Veranstaltung")
 
-# # # # # lv_dictlist anpassen
+    # # # # # lv_dictlist anpassen
     lv_dictlist_short = [x for x in lv_dictlist if x['Bogen'] in set_import]
     lv_dictlist = lv_dictlist_short
 
-# # # # # Bögen aus DB rauslöschen
+    # # # # # Bögen aus DB rauslöschen
     for bogen_nummer in set_delete:
         str_exec_delete = "DELETE FROM " + db_table_name + " WHERE Lehrveranstaltung='" + lv_namedeutsch \
                           + "' AND Vorname='" + lv[1] + "' AND Nachname='" + lv[2] \
@@ -242,34 +242,34 @@ for lv in lv_list:
         str_exec_delete = str_exec_delete[:-2] + ")"
         vukl_cursor.execute(str_exec_delete)
 
-#    print("\tLV-Name (englisch) umbenennen in (leer falls schon korrekt): ", end="")
-#    lv_nameenglisch = input()
-#    if not lv_nameenglisch:
-#        lv_nameenglisch = lv[0]
-#ZEIT#    print("\tTermine der Vorlesung (Format: Montag 8:15 48-210, Dienstag 10:00 46-268): ", end="")
-#  TODO Falls Übung sollten da eigentlich die anderen Details rein, kA wie die sinnvoll ausgelesen werden
-#ZEIT#    lv_raumtermin = input()
+    # print("\tLV-Name (englisch) umbenennen in (leer falls schon korrekt): ", end="")
+    #    lv_nameenglisch = input()
+    #    if not lv_nameenglisch:
+    #        lv_nameenglisch = lv[0]
+    # ZEIT#    print("\tTermine der Vorlesung (Format: Montag 8:15 48-210, Dienstag 10:00 46-268): ", end="")
+    #  TODO Falls Übung sollten da eigentlich die anderen Details rein, kA wie die sinnvoll ausgelesen werden
+    # ZEIT#    lv_raumtermin = input()
     lv_subdozent = input("\tLV hatte Subdozent: ")
-#ZEIT#    print("\tLV ist im Studiengang: ", end="") #*# mit Auswahl!
-#ZEIT#    lv_studgang = input()
-#ZEIT#    print("\tLV hat den Typ: ", end="") #*# mit Auswahl!
-#ZEIT#    lv_lvtyp = input()
-#ZEIT#    print("\tLV gehört zur Vertiefung: ", end="") #*# mit Auswahl!
-#ZEIT#    lv_vert = input()
+    # ZEIT#    print("\tLV ist im Studiengang: ", end="") #*# mit Auswahl!
+    # ZEIT#    lv_studgang = input()
+    # ZEIT#    print("\tLV hat den Typ: ", end="") #*# mit Auswahl!
+    # ZEIT#    lv_lvtyp = input()
+    # ZEIT#    print("\tLV gehört zur Vertiefung: ", end="") #*# mit Auswahl!
+    # ZEIT#    lv_vert = input()
     for row in lv_dictlist:
         row['Lehrveranstaltung'] = lv_namedeutsch
         row['Lehrveranstaltung_englisch'] = lv_nameenglisch
         row['Subdozent'] = lv_subdozent
-#ZEIT#        row['RaumTermin'] = lv_raumtermin
-#ZEIT#        row['Subdozent'] = lv_subdozent
-#ZEIT#        row['Studiengang'] = lv_studgang
-#ZEIT#        row['LVTyp'] = lv_lvtyp
-#ZEIT#        row['Vertiefungsgebiet'] = lv_vert
+    # ZEIT#        row['RaumTermin'] = lv_raumtermin
+    # ZEIT#        row['Subdozent'] = lv_subdozent
+    # ZEIT#        row['Studiengang'] = lv_studgang
+    # ZEIT#        row['LVTyp'] = lv_lvtyp
+    # ZEIT#        row['Vertiefungsgebiet'] = lv_vert
 
     for auswahl_frage in id_auswahl_fragen:
         auswahl_frage_intwerte_set = set()
         for row in lv_dictlist:
-            auswahl_wert = row["Q_"+str(auswahl_frage)]
+            auswahl_wert = row["Q_" + str(auswahl_frage)]
             if auswahl_wert.isdigit():
                 auswahl_frage_intwerte_set.add(int(auswahl_wert))
         auswahl_frage_intwerte = sorted(list(auswahl_frage_intwerte_set))
@@ -279,23 +279,23 @@ for lv in lv_list:
             if not ersatz_text:
                 ersatz_text = wert
             for row in lv_dictlist:
-                if row["Q_"+str(auswahl_frage)] == str(wert):
-                    row["Q_"+str(auswahl_frage)] = ersatz_text
+                if row["Q_" + str(auswahl_frage)] == str(wert):
+                    row["Q_" + str(auswahl_frage)] = ersatz_text
     str_import_dict = "INSERT INTO " + db_table_name + " ("
     # Get list of question IDs like (Q_1, Q_2, …, Q_17, Q_18-de, Q_19, …)
-    vukl_cursor.execute("SELECT replace(ID,'"+db_table_name+"','Q') FROM meta "+\
-    # Find non-standard question IDs that look like 'Q_18-de' …
-        "WHERE ID GLOB '"+db_table_name+"_*-"+csv_language+\
-    # as well as standard question IDs like Q_18 but not Q_18-en.
-        "' OR ID GLOB '"+db_table_name+"_*' AND NOT ID GLOB '"+db_table_name+"_*-*'")
+    vukl_cursor.execute("SELECT replace(ID,'" + db_table_name + "','Q') FROM meta " + \
+                        # Find non-standard question IDs that look like 'Q_18-de' …
+                        "WHERE ID GLOB '" + db_table_name + "_*-" + csv_language + \
+                        # as well as standard question IDs like Q_18 but not Q_18-en.
+                        "' OR ID GLOB '" + db_table_name + "_*' AND NOT ID GLOB '" + db_table_name + "_*-*'")
     question_names = vukl_cursor.fetchall()
     if len(question_names) != anzahl_fragen:
         print('Anzahl der Fragen stimmt nicht mit Angaben in meta-Tabelle überein')
         exit()
     for key in keys_list[0:-anzahl_fragen]:
-        str_import_dict = str_import_dict +"`"+key + "`,"
+        str_import_dict = str_import_dict + "`" + key + "`,"
     for key in question_names:
-        str_import_dict = str_import_dict + "`"+key[0]+"`,"
+        str_import_dict = str_import_dict + "`" + key[0] + "`,"
     str_import_dict = str_import_dict[0:-1] + ") VALUES ("
     for key in keys:
         str_import_dict = str_import_dict + "?" + ","
@@ -306,7 +306,7 @@ for lv in lv_list:
         list_from_dictrow = []
         for key in keys:
             list_from_dictrow.append(row[key])
-        #print(str_import_dict_intro + str_import_dict_row)
+        # print(str_import_dict_intro + str_import_dict_row)
         if row['Bogen'] in set_import:
             list_list_from_dictrow.append(list_from_dictrow)
     vukl_cursor.executemany(str_import_dict, list_list_from_dictrow)

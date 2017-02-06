@@ -26,13 +26,14 @@ import codecs
 import readline
 import re
 
-#-#-#-#-        Definition globaler Konstanten
-const_lbgeneral = 5                    # Bei weniger Teilnehmenden wird generell keine Auswertung erstellt
-const_lbvorlesung = 8                  # Bei weniger Teilnehmenden wird zu den folgenden Veranstaltungen keine Auswertung erstellt
-const_vorlesung = 'Ma[GH](Vor|VL\d\d)' # Regulärer Ausdruck (matcht etwa MaHVor oder MaGVL01)
+# -#-#-#-        Definition globaler Konstanten
+const_lbgeneral = 5  # Bei weniger Teilnehmenden wird generell keine Auswertung erstellt
+const_lbvorlesung = 8  # Bei weniger Teilnehmenden wird zu den folgenden Veranstaltungen keine Auswertung erstellt
+const_vorlesung = 'Ma[GH](Vor|VL\d\d)'  # Regulärer Ausdruck (matcht etwa MaHVor oder MaGVL01)
 str_language = "de"
 multisplit_current_value = "DUMMY"
 multisplit_questions = []
+
 
 def proper_input(x_n):
     """Outputs an integer from 0 to n for given input"""
@@ -56,6 +57,7 @@ def part_before_underscore(x_string_old):
     """Gibt den Substring vor dem ersten Unterstrich im String aus"""
     x_string_old_split = x_string_old.split('_')
     return x_string_old_split[0]
+
 
 # Forme eine Liste in Textform um.
 # Beispiel: [1,4,9,16] resultiert in '1, 4, 9 und 16'.
@@ -83,6 +85,7 @@ def sort_unique(x_list):
             x_set.add(item[0])
     return sorted(list(x_set))
 
+
 # x_keys = Liste an Schlüsseln für die ein Datensatz bestimmte Werte annehmen muss.
 #   Einträge hiervon können auch wiederum Listen sein für den Fall, dass ein Wert an
 #   verschiedenen Stellen stehen kann.
@@ -95,7 +98,7 @@ def sort_unique(x_list):
 def values_keys_to_string(x_lv, x_keys):
     result = " WHERE "
     if len(x_keys) == len(x_lv):
-        for i, key in enumerate(x_keys):                        # falls i/key eine liste sind, das ganze mit "oder" verknüpfen
+        for i, key in enumerate(x_keys):  # falls i/key eine liste sind, das ganze mit "oder" verknüpfen
             if isinstance(key, str):
                 result += key + "='" + x_lv[i] + "' AND "
             elif all(isinstance(item, str) for item in key):
@@ -121,17 +124,18 @@ def values_keys_to_string(x_lv, x_keys):
 # Beispiel: values_keys_to_string_list(['A','B','C'],[['1','2'],'3',['5','6']]) resutltiert in
 # ['A=1 AND B=3 AND C=5','A=1 AND B=3 AND C=6','A=2 AND B=3 AND C=5','A=2 AND B=3 AND C=6']
 def values_keys_to_string_list(x_lv, x_keys):
-    if len(x_lv)!=len(x_keys):
+    if len(x_lv) != len(x_keys):
         print("values_keys_to_string_list: Es sollte genau so viele Schlüssel wie Werte geben!")
         return [""]
-    if len(x_lv)==0:
+    if len(x_lv) == 0:
         return [""]
     key = x_keys[0]
     value = x_lv[0]
     if isinstance(key, str):
-        return [    key + "='" + value + "' AND " + i for i in values_keys_to_string_list(x_lv[1:],x_keys[1:])]
+        return [key + "='" + value + "' AND " + i for i in values_keys_to_string_list(x_lv[1:], x_keys[1:])]
     if all(isinstance(item, str) for item in key):
-        return [sub_key + "='" + value + "' AND " + i for i in values_keys_to_string_list(x_lv[1:],x_keys[1:]) for sub_key in key]
+        return [sub_key + "='" + value + "' AND " + i for i in values_keys_to_string_list(x_lv[1:], x_keys[1:]) for
+                sub_key in key]
     print("values_keys_to_string_list: Du hast es kaputt gemacht :(")
 
 
@@ -175,16 +179,18 @@ def choose_from_list(x_list):
 def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
     result = x_string
     # Ersetzung von '[Tabelle_Nr]'
-    for ersetzung in re.findall('\[[^][]*\]', x_string): # Über alle Vorkommen von '[…]' iterieren
-        fragen = ersetzung[1:-1].split() # '[' und ']' rausschneiden
-        x_rohdaten = [] # Liste aller Einträge durch die '[…]' ersetzt werden soll
+    for ersetzung in re.findall('\[[^][]*\]', x_string):  # Über alle Vorkommen von '[…]' iterieren
+        fragen = ersetzung[1:-1].split()  # '[' und ']' rausschneiden
+        x_rohdaten = []  # Liste aller Einträge durch die '[…]' ersetzt werden soll
         if len(fragen) == 1:
             # Falls ein '[Tabelle_Nr]' ersetzt werden soll:
             if fragen[0] in list_fragen:
                 # Lese Einträge zu `Q_Nr` in Tabelle entsprechend momentaner Auswahl
-                vukl_cursor.execute("SELECT `Q_" + part_after_underscore(fragen[0]) + "` FROM " + part_before_underscore(fragen[0])
-                                    + values_keys_to_string(x_lv, keys) # WHERE „ist passende Lehrveranstaltung“
-                                    + filter_to_string(x_list_filter, part_before_underscore(fragen[0]))) # AND „passt auf momentane Filter“
+                vukl_cursor.execute(
+                    "SELECT `Q_" + part_after_underscore(fragen[0]) + "` FROM " + part_before_underscore(fragen[0])
+                    + values_keys_to_string(x_lv, keys)  # WHERE „ist passende Lehrveranstaltung“
+                    + filter_to_string(x_list_filter,
+                                       part_before_underscore(fragen[0])))  # AND „passt auf momentane Filter“
                 x_rohdaten = vukl_cursor.fetchall()
         else:
             # Falls verschiedene Ergebnisse für verschiedene Lehrveranstaltungen kumuliert werden sollen:
@@ -197,13 +203,13 @@ def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
                                         '` FROM ' + part_before_underscore(fragen[i]) +
                                         ' WHERE ' + where_statements[i][:-5])
                     x_rohdaten += vukl_cursor.fetchall()
-        if len(x_rohdaten) > 0: # Falls es Ergebnisse gab …
+        if len(x_rohdaten) > 0:  # Falls es Ergebnisse gab …
             # überall '[Tabelle_Nr]' durch die Gesamtheit aller Nicht-NULL-Einträge
             # in x_rohdaten sortiert und in Textform ausgeben.
             result = result.replace(ersetzung, list_to_text(sort_unique(x_rohdaten)))
     for keyword in ['Lehrveranstaltung', 'Subdozent', 'Studiengang', 'Teilbereich', 'Anrede', 'Titel', 'Vorname',
                     'Nachname', 'LVTyp', 'Vertiefungsgebiet', 'RaumTermin', 'Periode']:
-        if '['+keyword+']' in result:
+        if '[' + keyword + ']' in result:
             x_set_rohdaten = set()
             str_q_substitute = ""
             for table in table_names:
@@ -214,9 +220,9 @@ def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
                 for item in x_rohdaten:
                     if item[0]:
                         x_set_rohdaten.add(item[0])
-            if len(x_rohdaten) > 0: # Falls es Ergebnisse gab '[$keyword]' wie oben ersetzen.
+            if len(x_rohdaten) > 0:  # Falls es Ergebnisse gab '[$keyword]' wie oben ersetzen.
                 result = result.replace(('[' + keyword + ']'), list_to_text(sorted(list(x_set_rohdaten))))
-    if '[Teilnehmerzahl]' in result:        # Gibt an, wieviele Bögen maximal von einem Typ abgegeben wurden
+    if '[Teilnehmerzahl]' in result:  # Gibt an, wieviele Bögen maximal von einem Typ abgegeben wurden
         max_zahl_teilnehmer = 0
         for table in table_names:
             vukl_cursor.execute("SELECT COUNT(*) FROM " + table + values_keys_to_string(x_lv, x_keys)
@@ -226,6 +232,7 @@ def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
                 max_zahl_teilnehmer = x_rohdaten[0][0]
         result = result.replace('[Teilnehmerzahl]', str(max_zahl_teilnehmer))
     return result
+
 
 # list_x = Liste, mit Einträgen 0 bis range (und ignorierten weiteren Einträgen, z. B. NULL)
 # Beispiele:
@@ -250,7 +257,7 @@ def raw_to_distribution(list_x, x_range, x_bool_neutral):
             counter = 0
             for item in list_x:
                 if item.isdigit():
-                    if int(item)-1 == i:
+                    if int(item) - 1 == i:
                         counter += 1
             result += "{" + str(counter) + "}"
         result += "}"
@@ -265,27 +272,27 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
         x_number_splits = 0
         append_to_question = []
         for i, style in enumerate(x_list_scheme):
-# # # # # Split "Klammern" erkennen (und überspringen)
+            # # # # # Split "Klammern" erkennen (und überspringen)
             if x_number_splits > 0:
                 if style[0] == 'unsplit':
                     x_number_splits -= 1
                 if style[0] == 'split':
                     x_number_splits += 1
                 continue
-# # # # # Print
+            # # # # # Print
             if style[0] == 'print':
                 tex_file.write(substitute_square_brackets(style[1], lv, keys, x_list_filter) + "\n")
-# # # # # Append
+            # # # # # Append
             elif style[0] == 'append':
                 append_to_question.append(style[1])
             elif style[0] == 'unappend':
                 append_to_question.pop()
-# # # # # Chapter, Section, Subsection
+            # # # # # Chapter, Section, Subsection
             elif style[0] == 'section' or style[0] == 'subsection' \
                     or style[0] == 'chapter' or style[0] == 'kurzchapter':
                 tex_file.write("\\" + style[0] + "{"
                                + substitute_square_brackets(style[1], lv, keys, x_list_filter) + "}\n")
-# # # # # Filter
+            # # # # # Filter
             elif style[0] == 'filter':
                 if style[1] in list_fragen:
                     x_list_filter.append((style[1], style[2:]))
@@ -294,7 +301,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                                      "Syntax des Schemas anpassen und VUKL neu starten!")
             elif style[0] == 'unfilter':
                 x_list_filter.pop()
-# # # # # Split
+            # # # # # Split
             # Bei Split nach mehreren Fragen <FrageS1> ... <FrageSn>, müssen diese für jeden Datensatz paarweise disjunkte Werte besitzen.
             # Es werden dann alle in einer der Fragen vorkommenden Werte $i der Reihe nach durchgegangen
             # und die bis zum entsprechenden Unsplit angegebenen Zeilen ausgegeben.
@@ -305,11 +312,11 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
             # und die sonstigen Bedingungen durch Lehrveranstaltung und vorherige Splits und Filter gegeben sind.
             # Genutzt wird dies etwa, wenn man mehrere verschiedene Personen auf einem Bogen bewerten soll.
             elif style[0] == 'split':
-                x_number_splits = 1         # wenn das aufgerufen wird, dann waren es vorher null splits
+                x_number_splits = 1  # wenn das aufgerufen wird, dann waren es vorher null splits
                 new_list_scheme = []
-                for scheme in x_list_scheme[i+1:]:
+                for scheme in x_list_scheme[i + 1:]:
                     if scheme[0] == 'unsplit' and x_number_splits == 1:
-                        break                   # letztes unsplit wird nicht mehr weitergegeben an rek. Funktionsaufruf
+                        break  # letztes unsplit wird nicht mehr weitergegeben an rek. Funktionsaufruf
                     elif scheme[0] == 'unsplit':
                         x_number_splits -= 1
                     elif scheme[0] == 'split':
@@ -327,7 +334,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                 multisplit_questions = style[1:]
                 for splitstyle in multisplit_questions:
                     if splitstyle not in list_fragen:
-                        print("Der Split ", end="" )
+                        print("Der Split ", end="")
                         print(multisplit_questions)
                         print(" enthält im Weiteren ungültige Fragen. Das Ergebnis wird fehlerhaft ausgegeben.")
                 for splitstyle in style[1:]:
@@ -344,7 +351,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                     keys.append("`Q_" + part_after_underscore(style[1]) + "`")
                 set_values = set()
                 for value in list_split_values:
-                    if value[0]:        # sonst leere strings
+                    if value[0]:  # sonst leere strings
                         set_values.add(value[0])
                 list_values = sorted(set_values)
                 new_list_auswahl_lv = []
@@ -352,7 +359,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                     new_list_auswahl_lv.append(lv + (value,))
                 data_to_tex(new_list_auswahl_lv, new_list_scheme, x_list_filter)
                 keys.pop()
-# # # # # Semester
+            # # # # # Semester
             elif style[0] == 'semester':
                 if style[1] in table_names:
                     vukl_cursor.execute("SELECT * FROM meta WHERE ID LIKE '%" + style[1] + "%' AND Type='SemesterBA'")
@@ -377,32 +384,32 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                     if len(rohdaten_q_raw) > const_lbgeneral:
                         rohdaten_q_1 = []
                         rohdaten_q_2 = []
-                        for row in rohdaten_q_raw:                  # Falls beides: Bachelorstudent
+                        for row in rohdaten_q_raw:  # Falls beides: Bachelorstudent
                             if (row[0] and row[1]) or row[0]:
                                 rohdaten_q_1.append(row[0])
                             else:
                                 rohdaten_q_2.append(row[1])
                         semester_string = "\\semester{Semester: }{"
                         for i in range(int(meta_dict_1['Range'])):
-                            semester_string += "{" + meta_dict_1['Single_' + str_language + '_' + str(i+1)] + "}"
+                            semester_string += "{" + meta_dict_1['Single_' + str_language + '_' + str(i + 1)] + "}"
                         semester_string += "}" + raw_to_distribution(rohdaten_q_1, meta_dict_1['Range'],
                                                                      meta_dict_1['Neutral']) + "{"
                         for j in range(int(meta_dict_2['Range'])):
-                            semester_string += "{" + meta_dict_2['Single_' + str_language + '_' + str(j+1)] + "}"
+                            semester_string += "{" + meta_dict_2['Single_' + str_language + '_' + str(j + 1)] + "}"
                         semester_string += "}" + raw_to_distribution(rohdaten_q_2, meta_dict_2['Range'],
                                                                      meta_dict_1['Neutral']) + "\n"
                         tex_file.write(semester_string)
                 else:
                     print("Der folgende Style startet mit einem Tabellennamen, hat aber keine bekannte Option.")
                     print(style)
-# # # # # Ausgabe der tatsächlichen Fragen
+                    # # # # # Ausgabe der tatsächlichen Fragen
             elif style[0] in list_fragen:
                 if len(style) == 1:
                     vukl_cursor.execute("SELECT `Q_" + part_after_underscore(style[0]) + "` FROM "
                                         + part_before_underscore(style[0]) + values_keys_to_string(lv, keys)
                                         + filter_to_string(x_list_filter, part_before_underscore(style[0])))
                     rohdaten_q_raw = vukl_cursor.fetchall()
-                else: # Funktioniert nur, wenn zuvor 'split <FrageA> <FrageB> ...' genutzt wurde.
+                else:  # Funktioniert nur, wenn zuvor 'split <FrageA> <FrageB> ...' genutzt wurde.
                     # Bestimmt mittels globaler Variable `multisplit_current_value`, welche der Fragen <FrageA>, <FrageB>, ... den momentanen Wert annimmt.
                     where_statements = values_keys_to_string_list(lv, keys)
                     rohdaten_q_raw = []
@@ -415,7 +422,8 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                 if len(rohdaten_q_raw) < const_lbgeneral:
                     continue
                 # Bei Vorlesungen gilt eine weitere (schärfere) Schranke
-                if re.fullmatch(const_vorlesung,part_before_underscore(style[0])) and len(rohdaten_q_raw) < const_lbvorlesung:
+                if re.fullmatch(const_vorlesung, part_before_underscore(style[0])) and len(
+                        rohdaten_q_raw) < const_lbvorlesung:
                     continue
                 rohdaten_q = []
                 for item in rohdaten_q_raw:
@@ -430,10 +438,10 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                     meta_dict['Neutral'] = True
                 else:
                     meta_dict['Neutral'] = False
-                question = meta_dict['Q_'+str_language] + ''.join(append_to_question)
+                question = meta_dict['Q_' + str_language] + ''.join(append_to_question)
                 if meta_dict['Type'] == 'Skala':
                     tex_file.write("\\skala{" + meta_dict['Positive'] + "}{" + question + "}{"
-                                   + meta_dict['PolLeft_'+str_language] + "}{" + meta_dict['PolRight_'+str_language]
+                                   + meta_dict['PolLeft_' + str_language] + "}{" + meta_dict['PolRight_' + str_language]
                                    + "}" + raw_to_distribution(rohdaten_q, meta_dict['Range'], meta_dict['Neutral'])
                                    + "\n")
                 elif meta_dict['Type'] == 'Single' or meta_dict['Type'] == 'SemesterBA' \
@@ -449,14 +457,15 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                             single_string += "graph"
                         single_string += "{" + question + "}{"
                         for i in range(int(meta_dict['Range'])):
-                            single_string += "{" + meta_dict['Single_' + str_language + '_' + str(i+1)] + "}"
+                            single_string += "{" + meta_dict['Single_' + str_language + '_' + str(i + 1)] + "}"
                         single_string += "}" \
                                          + raw_to_distribution(rohdaten_q, meta_dict['Range'], meta_dict['Neutral']) \
                                          + "\n"
                         tex_file.write(single_string)
                 elif meta_dict['Type'] == 'YesNoComment':
                     tex_file.write("\\yesnocomment{" + question + "}" +
-                                   raw_to_distribution(rohdaten_q, meta_dict['Range'], meta_dict['Neutral'])[1:-1] + "\n")
+                                   raw_to_distribution(rohdaten_q, meta_dict['Range'], meta_dict['Neutral'])[
+                                   1:-1] + "\n")
                 elif meta_dict['Type'] == 'Offen':
                     offen_string = "\\offen{" + question + "}{%\n"
                     set_rohdaten_q = set(rohdaten_q)
@@ -481,51 +490,51 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
 vukl_db = sqlite3.connect('db/vukl.db')
 with vukl_db:
     vukl_cursor = vukl_db.cursor()
-# # # # # table_names: Enthält die Namen aller Fragebögen
+    # # # # # table_names: Enthält die Namen aller Fragebögen
     vukl_cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
     table_names_raw = vukl_cursor.fetchall()
     table_names = []
     for row in table_names_raw:
         table_names.append(row[0])
     table_names.remove('meta')
-# # # # # meta_keys: Enthält die Spaltenbezeichnungen der meta Tabelle
+    # # # # # meta_keys: Enthält die Spaltenbezeichnungen der meta Tabelle
     vukl_cursor.execute("SELECT * FROM meta")
     vukl_cursor.fetchone()
     meta_keys = list(map(lambda x: x[0], vukl_cursor.description))
-# # # # # list_veranstaltungen: Enthält eine Liste aller eindeutigen Tupel aus Semester, Vorlesung, Dozent
+    # # # # # list_veranstaltungen: Enthält eine Liste aller eindeutigen Tupel aus Semester, Vorlesung, Dozent
     set_veranstaltungen = set()
     for table in table_names:
         vukl_cursor.execute("SELECT Periode, Lehrveranstaltung, Nachname, Vorname FROM " + table + " ")
         set_veranstaltungen = set_veranstaltungen | set(vukl_cursor.fetchall())
     list_veranstaltungen = sorted(set_veranstaltungen)
-# # # # #  list_fragen: Enthält eine Liste aller Fragen die bereits in meta definiert sind
+    # # # # #  list_fragen: Enthält eine Liste aller Fragen die bereits in meta definiert sind
     vukl_cursor.execute("SELECT ID FROM meta")
     list_fragen_raw = vukl_cursor.fetchall()
     list_fragen = []
     for item in list_fragen_raw:
         list_fragen.append(item[0])
-# # # # # list_auswahlfragen
+    # # # # # list_auswahlfragen
     vukl_cursor.execute("SELECT ID FROM meta WHERE Type='Auswahl'")
     list_auswahlfragen_raw = vukl_cursor.fetchall()
     list_auswahlfragen = []
     for item in list_auswahlfragen_raw:
         list_auswahlfragen.append(item[0])
-# # # # # list_auswahlwerte
+    # # # # # list_auswahlwerte
     list_auswahlwerte_raw = []
     for frage in list_auswahlfragen:
-        vukl_cursor.execute("SELECT `Q_" + part_after_underscore(frage) + "` FROM " + part_before_underscore(frage) + "")
+        vukl_cursor.execute(
+            "SELECT `Q_" + part_after_underscore(frage) + "` FROM " + part_before_underscore(frage) + "")
         list_auswahlwerte_raw.extend(vukl_cursor.fetchall())
     set_auswahlwerte = set()
     for item in list_auswahlwerte_raw:
         set_auswahlwerte.add(item[0])
     list_auswahlwerte = sorted(set_auswahlwerte)
 
-
-# # # # # Ausgabe
+    # # # # # Ausgabe
     print("### \t VUKLout \t ###")
     print("\t Ausgaberoutine von VUKL \n")
 
-# # # # # Lehrveranstaltungen auswählen
+    # # # # # Lehrveranstaltungen auswählen
     print("Welche Auswahl von Veranstaltungen möchten Sie auswerten?")
     print("\t any: \t komplettes Semester")
     print("\t   1: \t Alle Veranstaltungen eines Dozenten")
@@ -558,7 +567,8 @@ with vukl_db:
         leiter = choose_from_list(list_auswahlwerte)
         list_leiterauswahl = []
         for frage in list_auswahlfragen:
-            vukl_cursor.execute("SELECT Periode, Lehrveranstaltung, Nachname, Vorname FROM " + part_before_underscore(frage)+ " WHERE `Q_" + part_after_underscore(frage) + "`='" + leiter + "'")
+            vukl_cursor.execute("SELECT Periode, Lehrveranstaltung, Nachname, Vorname FROM " + part_before_underscore(
+                frage) + " WHERE `Q_" + part_after_underscore(frage) + "`='" + leiter + "'")
             list_leiterauswahl.extend(vukl_cursor.fetchall())
         set_leiterauswahl = set(list_leiterauswahl)
         # Liste der Lehrveranstaltungen einschränken auf solche, in denen $leiter eine Übung leitet.
@@ -579,7 +589,7 @@ with vukl_db:
                 fertig = True
     keys = ["Periode", "Lehrveranstaltung", "Nachname", "Vorname"]
 
-# # # # # list_scheme: Enthält das Auswertungsschema als listlist schon passend aufgeteilt
+    # # # # # list_scheme: Enthält das Auswertungsschema als listlist schon passend aufgeteilt
     print("\nDiese Auswertungsschemata stehen zur Verfügung")
     bool_noschemefile = True
     for file in os.listdir('scheme/'):
@@ -591,26 +601,26 @@ with vukl_db:
         sys.exit(0)
     print("Welches Schema soll genutzt werden?", end=" ")
     scheme_file_name = input()
-    if scheme_file_name.count('.') == 0:           # falls kein Punkt im Namen enthalten ist, so wird automatisch '.csv'
-                                                   #  ergänzt; andere 'Fehler'berichtigung gibt es nicht
+    if scheme_file_name.count('.') == 0:  # falls kein Punkt im Namen enthalten ist, so wird automatisch '.csv'
+        #  ergänzt; andere 'Fehler'berichtigung gibt es nicht
         scheme_file_name += '.txt'
-    with codecs.open("scheme/"+scheme_file_name, "r", encoding="utf-8-sig") as scheme_file:
+    with codecs.open("scheme/" + scheme_file_name, "r", encoding="utf-8-sig") as scheme_file:
         list_scheme_raw = list(scheme_file)
         list_scheme = []
         for item_raw in list_scheme_raw:
             item_line = ((item_raw.split("%"))[0]).strip()
-            if item_line.startswith("print"):                       # falls print wird Rest nicht gesplittet
-                list_scheme.append(("print",item_line[6:]))
-            elif item_line.startswith("append"):                    # dito
-                list_scheme.append(("append",item_line[7:]))
-            elif item_line.startswith("chapter"):                   # dito
-                list_scheme.append(("chapter",item_line[8:]))
-            elif item_line.startswith("kurzchapter"):               # dito
-                list_scheme.append(("kurzchapter",item_line[12:]))
-            elif item_line.startswith("section"):                   # dito
-                list_scheme.append(("section",item_line[8:]))
-            elif item_line.startswith("subsection"):                # dito
-                list_scheme.append(("subsection",item_line[11:]))
+            if item_line.startswith("print"):  # falls print wird Rest nicht gesplittet
+                list_scheme.append(("print", item_line[6:]))
+            elif item_line.startswith("append"):  # dito
+                list_scheme.append(("append", item_line[7:]))
+            elif item_line.startswith("chapter"):  # dito
+                list_scheme.append(("chapter", item_line[8:]))
+            elif item_line.startswith("kurzchapter"):  # dito
+                list_scheme.append(("kurzchapter", item_line[12:]))
+            elif item_line.startswith("section"):  # dito
+                list_scheme.append(("section", item_line[8:]))
+            elif item_line.startswith("subsection"):  # dito
+                list_scheme.append(("subsection", item_line[11:]))
             elif item_line:
                 item = []
                 item_line_split = item_line.split()
@@ -621,7 +631,7 @@ with vukl_db:
                         item.append(cell)
                 list_scheme.append(item)
 
-# # # # # LaTeX Datei schreiben, data_to_tex aufrufen
+                # # # # # LaTeX Datei schreiben, data_to_tex aufrufen
     with codecs.open("tex/vukl.tex", "w", encoding="utf-8") as tex_file:
         # TeX-Code in tex_file schreiben, hierbei ist list_auswahl_lv eine Liste, deren Einträge die Form
         # [Periode, Lehrveranstaltung, Nachname, Vorname] haben.
