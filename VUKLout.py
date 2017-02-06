@@ -187,7 +187,8 @@ def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
             if fragen[0] in list_fragen:
                 # Lese Einträge zu `Q_Nr` in Tabelle entsprechend momentaner Auswahl
                 vukl_cursor.execute(
-                    "SELECT `Q_" + part_after_underscore(fragen[0]) + "` FROM " + part_before_underscore(fragen[0])
+                    "SELECT `Q_" + part_after_underscore(fragen[0]) + "` FROM " + repr(
+                        part_before_underscore(fragen[0]))
                     + values_keys_to_string(x_lv, keys)  # WHERE „ist passende Lehrveranstaltung“
                     + filter_to_string(x_list_filter,
                                        part_before_underscore(fragen[0])))  # AND „passt auf momentane Filter“
@@ -200,7 +201,7 @@ def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
                 if fragen[0] in list_fragen:
                     # Einträge zu `Q_xi` aus Tabellei für i-te Lehrveranstaltungs-Kombination auswählen.
                     vukl_cursor.execute('SELECT `Q_' + part_after_underscore(fragen[i]) +
-                                        '` FROM ' + part_before_underscore(fragen[i]) +
+                                        '` FROM ' + repr(part_before_underscore(fragen[i])) +
                                         ' WHERE ' + where_statements[i][:-5])
                     x_rohdaten += vukl_cursor.fetchall()
         if len(x_rohdaten) > 0:  # Falls es Ergebnisse gab …
@@ -214,7 +215,7 @@ def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
             str_q_substitute = ""
             for table in table_names:
                 # Lese Einträge zu `keyword` in Tabelle entsprechend momentaner Auswahl
-                vukl_cursor.execute("SELECT " + keyword + " FROM " + table + values_keys_to_string(x_lv, x_keys)
+                vukl_cursor.execute("SELECT " + keyword + " FROM " + repr(table) + values_keys_to_string(x_lv, x_keys)
                                     + filter_to_string(x_list_filter, table))
                 x_rohdaten = vukl_cursor.fetchall()
                 for item in x_rohdaten:
@@ -225,7 +226,7 @@ def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
     if '[Teilnehmerzahl]' in result:  # Gibt an, wieviele Bögen maximal von einem Typ abgegeben wurden
         max_zahl_teilnehmer = 0
         for table in table_names:
-            vukl_cursor.execute("SELECT COUNT(*) FROM " + table + values_keys_to_string(x_lv, x_keys)
+            vukl_cursor.execute("SELECT COUNT(*) FROM " + repr(table) + values_keys_to_string(x_lv, x_keys)
                                 + filter_to_string(x_list_filter, table))
             x_rohdaten = vukl_cursor.fetchall()
             if x_rohdaten[0][0] > max_zahl_teilnehmer:
@@ -339,7 +340,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                         print(" enthält im Weiteren ungültige Fragen. Das Ergebnis wird fehlerhaft ausgegeben.")
                 for splitstyle in style[1:]:
                     vukl_cursor.execute("SELECT `Q_" + part_after_underscore(splitstyle) + "` FROM "
-                                        + part_before_underscore(splitstyle) + values_keys_to_string(lv, keys)
+                                        + repr(part_before_underscore(splitstyle)) + values_keys_to_string(lv, keys)
                                         + filter_to_string(x_list_filter, part_before_underscore(splitstyle)))
                     list_split_values += vukl_cursor.fetchall()
                 if len(style[1:]) > 1:
@@ -378,7 +379,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                         meta_dict_2['Neutral'] = False
                     vukl_cursor.execute("SELECT `Q_" + part_after_underscore(meta_dict_1['ID']) + "`, `Q_"
                                         + part_after_underscore(meta_dict_2['ID']) + "` FROM "
-                                        + style[1] + values_keys_to_string(lv, keys)
+                                        + repr(style[1]) + values_keys_to_string(lv, keys)
                                         + filter_to_string(x_list_filter, style[1]))
                     rohdaten_q_raw = vukl_cursor.fetchall()
                     if len(rohdaten_q_raw) > const_lbgeneral:
@@ -406,7 +407,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
             elif style[0] in list_fragen:
                 if len(style) == 1:
                     vukl_cursor.execute("SELECT `Q_" + part_after_underscore(style[0]) + "` FROM "
-                                        + part_before_underscore(style[0]) + values_keys_to_string(lv, keys)
+                                        + repr(part_before_underscore(style[0])) + values_keys_to_string(lv, keys)
                                         + filter_to_string(x_list_filter, part_before_underscore(style[0])))
                     rohdaten_q_raw = vukl_cursor.fetchall()
                 else:  # Funktioniert nur, wenn zuvor 'split <FrageA> <FrageB> ...' genutzt wurde.
@@ -415,7 +416,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                     rohdaten_q_raw = []
                     for i in range(len(style)):
                         vukl_cursor.execute('SELECT `Q_' + part_after_underscore(style[i]) +
-                                            '` FROM ' + part_before_underscore(style[i]) +
+                                            '` FROM ' + repr(part_before_underscore(style[i])) +
                                             ' WHERE ' + where_statements[i][:-5])
                         rohdaten_q_raw += vukl_cursor.fetchall()
                 # Ausgabe unterbinden, falls zu wenige Datensätze vorliegen
@@ -504,7 +505,7 @@ with vukl_db:
     # # # # # list_veranstaltungen: Enthält eine Liste aller eindeutigen Tupel aus Semester, Vorlesung, Dozent
     set_veranstaltungen = set()
     for table in table_names:
-        vukl_cursor.execute("SELECT Periode, Lehrveranstaltung, Nachname, Vorname FROM " + table + " ")
+        vukl_cursor.execute("SELECT Periode, Lehrveranstaltung, Nachname, Vorname FROM " + repr(table) + " ")
         set_veranstaltungen = set_veranstaltungen | set(vukl_cursor.fetchall())
     list_veranstaltungen = sorted(set_veranstaltungen)
     # # # # #  list_fragen: Enthält eine Liste aller Fragen die bereits in meta definiert sind
@@ -523,7 +524,7 @@ with vukl_db:
     list_auswahlwerte_raw = []
     for frage in list_auswahlfragen:
         vukl_cursor.execute(
-            "SELECT `Q_" + part_after_underscore(frage) + "` FROM " + part_before_underscore(frage) + "")
+            "SELECT `Q_" + part_after_underscore(frage) + "` FROM " + repr(part_before_underscore(frage)) + "")
         list_auswahlwerte_raw.extend(vukl_cursor.fetchall())
     set_auswahlwerte = set()
     for item in list_auswahlwerte_raw:
@@ -567,8 +568,9 @@ with vukl_db:
         leiter = choose_from_list(list_auswahlwerte)
         list_leiterauswahl = []
         for frage in list_auswahlfragen:
-            vukl_cursor.execute("SELECT Periode, Lehrveranstaltung, Nachname, Vorname FROM " + part_before_underscore(
-                frage) + " WHERE `Q_" + part_after_underscore(frage) + "`='" + leiter + "'")
+            vukl_cursor.execute("SELECT Periode, Lehrveranstaltung, Nachname, Vorname FROM "
+                                + repr(part_before_underscore(frage)) + " WHERE `Q_"
+                                + part_after_underscore(frage) + "`='" + leiter + "'")
             list_leiterauswahl.extend(vukl_cursor.fetchall())
         set_leiterauswahl = set(list_leiterauswahl)
         # Liste der Lehrveranstaltungen einschränken auf solche, in denen $leiter eine Übung leitet.
