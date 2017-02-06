@@ -49,19 +49,30 @@ def cut_quote(any_str):
 
 print("### \t VUKLin \t ###")
 print("\t Einleseroutine von VUKL \n")
-# # # # # csv-Datei als csv_file öffnen
-print("Folgende Dateien wurden im Ordner " + CSV_DIRECTORY + "gefunden:")
-bool_nocsvfile = True
-for file in os.listdir(CSV_DIRECTORY):
-    if file.endswith('.csv'):
-        print("\t", file)
-        bool_nocsvfile = False
-if bool_nocsvfile:
-    print("Es wurde keine 'csv' Datei im Ordner gefunden.")
-    sys.exit(0)
-csv_file_name = input("\tWelche Datei soll eingelesen werden? ")
-if csv_file_name.count('.') == 0:
-    csv_file_name += '.csv'
+
+# ask for CSV input file if not passed as command line argument
+if sys.argv == 0 and os.path.isfile(sys.argv[0]):
+    print("Folgende Dateien wurden im Ordner " + CSV_DIRECTORY + "gefunden:")
+    bool_nocsvfile = True
+    for file in os.listdir(CSV_DIRECTORY):
+        if file.endswith('.csv'):
+            print("\t", file)
+            bool_nocsvfile = False
+    if bool_nocsvfile:
+        print("Es wurde keine '.csv' Datei im Ordner gefunden.")
+        sys.exit(0)
+    csv_file_name = input("\tWelche Datei soll eingelesen werden? ")
+    if csv_file_name.count('.') == 0:
+        csv_file_name += '.csv'
+else:
+    csv_file_name = sys.argv[1]
+    if os.path.isfile(csv_file_name):
+        csv_file_name = csv_file_name.replace(CSV_DIRECTORY, '', 1)
+    else:
+        print("ERROR: Übergebene Datei existiert nicht!")
+        sys.exit(1)
+print("Datei " + csv_file_name + " wird eingelesen.")
+
 
 # # # # # Nachfragen ob Bögen englisch oder deutsch sind
 csv_language = input("Sind die Daten von einem deutschen (default) oder englischen Fragebogen (en)? ")
