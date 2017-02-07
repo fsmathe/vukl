@@ -245,7 +245,7 @@ def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
                 for item in x_rohdaten:
                     if item[0]:
                         x_set_rohdaten.add(item[0])
-            if len(x_rohdaten) > 0:  # Falls es Ergebnisse gab '[$keyword]' wie oben ersetzen.
+            if len(x_set_rohdaten) > 0:  # Falls es Ergebnisse gab '[$keyword]' wie oben ersetzen.
                 result = result.replace(('[' + keyword + ']'), list_to_text(sorted(list(x_set_rohdaten))))
     if '[Teilnehmerzahl]' in result:  # Gibt an, wieviele Bögen maximal von einem Typ abgegeben wurden
         max_zahl_teilnehmer = 0
