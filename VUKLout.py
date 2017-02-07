@@ -50,12 +50,11 @@ str_language = "de"
 multisplit_current_value = "DUMMY"
 multisplit_questions = []
 
-
 ########################
 
 
 # TODO: refactor
-schnitt = [0,0,0,0,0,0]
+schnitt = [0, 0, 0, 0, 0, 0]
 
 
 def proper_input(x_n):
@@ -258,13 +257,14 @@ def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
         result = result.replace('[Teilnehmerzahl]', str(max_zahl_teilnehmer))
     if RATING_ENABLED:
         if '[Gesamtschnitt]' in result:
-            if (schnitt[5]+schnitt[4]+schnitt[3]+schnitt[2]+schnitt[1]+schnitt[0]) == 0:
+            if (schnitt[5] + schnitt[4] + schnitt[3] + schnitt[2] + schnitt[1] + schnitt[0]) == 0:
                 result = result.replace('[Gesamtschnitt]', 'NA')
             else:
-                gesamtschnitt = (6*schnitt[5]+5*schnitt[4]+4*schnitt[3]+3*schnitt[2]+2*schnitt[1]+schnitt[0]) / \
-                                (schnitt[5]+schnitt[4]+schnitt[3]+schnitt[2]+schnitt[1]+schnitt[0])
-                result = result.replace('[Gesamtschnitt]', str(round(gesamtschnitt,2)))
-            schnitt = [0,0,0,0,0,0]
+                gesamtschnitt = (6 * schnitt[5] + 5 * schnitt[4] + 4 * schnitt[3] + 3 * schnitt[2] + 2 * schnitt[1] +
+                                 schnitt[0]) / \
+                                (schnitt[5] + schnitt[4] + schnitt[3] + schnitt[2] + schnitt[1] + schnitt[0])
+                result = result.replace('[Gesamtschnitt]', str(round(gesamtschnitt, 2)))
+            schnitt = [0, 0, 0, 0, 0, 0]
     return result
 
 
@@ -303,14 +303,14 @@ def raw_to_distribution(list_x, x_range, x_bool_neutral):
 # TODO: reintroduced from FSR EIT version, required for rating --> may be merged somehow
 def raw_to_values(list_x, x_range):
     if x_range.isdigit():
-        result = [0,] * int(x_range)
+        result = [0, ] * int(x_range)
         for item in list_x:
             if item.isdigit():
-                result[int(item)-1] += 1
-#        print("raw to values: ", end="")
-#        print(result)
+                result[int(item) - 1] += 1
+            #        print("raw to values: ", end="")
+            #        print(result)
     else:
-        return [0,]
+        return [0, ]
     return result
 
 
@@ -461,7 +461,7 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                     # Bestimmt mittels globaler Variable `multisplit_current_value`, welche der Fragen <FrageA>, <FrageB>, ... den momentanen Wert annimmt.
                     where_statements = values_keys_to_string_list(lv, keys)
                     rohdaten_q_raw = []
-                    for i in range(len(style)-1):
+                    for i in range(len(style) - 1):
                         vukl_cursor.execute('SELECT `Q_' + part_after_underscore(style[i]) +
                                             '` FROM ' + repr(part_before_underscore(style[i])) +
                                             ' WHERE ' + where_statements[i][:-5])
@@ -532,12 +532,13 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                     continue
 
                 # rating calculation
-                if RATING_ENABLED and len(style) > 1:          #TODO das einfach zu if false ändern, dann ist der stress weg!
+                if RATING_ENABLED and len(style) > 1:  # TODO das einfach zu if false ändern, dann ist der stress weg!
                     if style[1].isdigit():
                         faktor = int(style[1])
                         if meta_dict['Range'] is not None and meta_dict['Range'].isdigit():
-                            if int(meta_dict['Range']) > 6 or int(meta_dict['Range']) <5:
-                                print(meta_dict['Range'] + meta_dict['Q_de'] + ": Spektrum einer Schnittfrage ist nicht 5 oder 6")
+                            if int(meta_dict['Range']) > 6 or int(meta_dict['Range']) < 5:
+                                print(meta_dict['Range'] + "  " + meta_dict[
+                                    'Q_de'] + ": Spektrum einer Schnittfrage ist nicht 5 oder 6")
                             elif faktor < 1:
                                 print("Die Frage fliesst eh nicht ein")
                             elif int(meta_dict['Range']) == 6:
@@ -545,43 +546,43 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                                 if meta_dict['Positive'] == 'C':
                                     continue
                                 elif meta_dict['Positive'] == 'L':
-                                    schnitt[5] += zwischenschnitt[5]*faktor
-                                    schnitt[4] += zwischenschnitt[4]*faktor
-                                    schnitt[3] += zwischenschnitt[3]*faktor
-                                    schnitt[2] += zwischenschnitt[2]*faktor
-                                    schnitt[1] += zwischenschnitt[1]*faktor
-                                    schnitt[0] += zwischenschnitt[0]*faktor
+                                    schnitt[5] += zwischenschnitt[5] * faktor
+                                    schnitt[4] += zwischenschnitt[4] * faktor
+                                    schnitt[3] += zwischenschnitt[3] * faktor
+                                    schnitt[2] += zwischenschnitt[2] * faktor
+                                    schnitt[1] += zwischenschnitt[1] * faktor
+                                    schnitt[0] += zwischenschnitt[0] * faktor
                                 elif meta_dict['Positive'] == 'N':
                                     continue
                                 else:
-                                    schnitt[5] += zwischenschnitt[0]*faktor
-                                    schnitt[4] += zwischenschnitt[1]*faktor
-                                    schnitt[3] += zwischenschnitt[2]*faktor
-                                    schnitt[2] += zwischenschnitt[3]*faktor
-                                    schnitt[1] += zwischenschnitt[4]*faktor
-                                    schnitt[0] += zwischenschnitt[5]*faktor
+                                    schnitt[5] += zwischenschnitt[0] * faktor
+                                    schnitt[4] += zwischenschnitt[1] * faktor
+                                    schnitt[3] += zwischenschnitt[2] * faktor
+                                    schnitt[2] += zwischenschnitt[3] * faktor
+                                    schnitt[1] += zwischenschnitt[4] * faktor
+                                    schnitt[0] += zwischenschnitt[5] * faktor
                             else:
                                 zwischenschnitt = raw_to_values(rohdaten_q, meta_dict['Range'])
                                 if meta_dict['Positive'] == 'C':
-                                    schnitt[0] += zwischenschnitt[2]*faktor
-                                    schnitt[2] += zwischenschnitt[1]*faktor + zwischenschnitt[3]*faktor
-                                    schnitt[4] += zwischenschnitt[0]*faktor + zwischenschnitt[4]*faktor
+                                    schnitt[0] += zwischenschnitt[2] * faktor
+                                    schnitt[2] += zwischenschnitt[1] * faktor + zwischenschnitt[3] * faktor
+                                    schnitt[4] += zwischenschnitt[0] * faktor + zwischenschnitt[4] * faktor
                                 elif meta_dict['Positive'] == 'L':
-                                    schnitt[4] += zwischenschnitt[4]*faktor
-                                    schnitt[3] += zwischenschnitt[3]*faktor
-                                    schnitt[2] += zwischenschnitt[2]*faktor
-                                    schnitt[1] += zwischenschnitt[1]*faktor
-                                    schnitt[0] += zwischenschnitt[0]*faktor
+                                    schnitt[4] += zwischenschnitt[4] * faktor
+                                    schnitt[3] += zwischenschnitt[3] * faktor
+                                    schnitt[2] += zwischenschnitt[2] * faktor
+                                    schnitt[1] += zwischenschnitt[1] * faktor
+                                    schnitt[0] += zwischenschnitt[0] * faktor
                                 elif meta_dict['Positive'] == 'N':
                                     continue
                                 else:
-                                    schnitt[4] += zwischenschnitt[0]*faktor
-                                    schnitt[3] += zwischenschnitt[1]*faktor
-                                    schnitt[2] += zwischenschnitt[2]*faktor
-                                    schnitt[1] += zwischenschnitt[3]*faktor
-                                    schnitt[0] += zwischenschnitt[4]*faktor
+                                    schnitt[4] += zwischenschnitt[0] * faktor
+                                    schnitt[3] += zwischenschnitt[1] * faktor
+                                    schnitt[2] += zwischenschnitt[2] * faktor
+                                    schnitt[1] += zwischenschnitt[3] * faktor
+                                    schnitt[0] += zwischenschnitt[4] * faktor
                         else:
-                            print("hier bin ich")
+                            continue
                     elif style[1] in list_fragen:
                         print("Fragen fusionieren ist noch nicht eingebaut")
                     else:
@@ -746,6 +747,6 @@ with vukl_db:
         # leiter_filter enthält Paare an Fragen und Name der_des Übungsleiter_in
 
         if RATING_ENABLED:
-                tex_file.write("""\\newcommand{\\rating}[1] { \colorbox{yellow}{\Huge{Rating: #1}} }""")
+            tex_file.write("""\\newcommand{\\rating}[1] { \colorbox{yellow}{\Huge{Rating: #1}} }""")
 
         data_to_tex(list_auswahl_lv, list_scheme, leiter_filter)
