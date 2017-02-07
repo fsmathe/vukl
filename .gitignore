@@ -2,9 +2,13 @@
 # TeX build products
 *.aux
 *.auxlock
+*.bbl
+*.blg
 *.log
 *.out
 *.pdf
+*.synctex.gz
+*.synctex.gz(busy)
 *.toc
 *.maf
 *.mtc*
