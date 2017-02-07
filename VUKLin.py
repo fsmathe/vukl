@@ -68,10 +68,11 @@ else:
     csv_file_name = sys.argv[1]
     if os.path.isfile(csv_file_name):
         csv_file_name = csv_file_name.replace(CSV_DIRECTORY, '', 1)
-    else:
-        print("ERROR: Übergebene Datei existiert nicht!")
-        sys.exit(1)
-print("Datei " + csv_file_name + " wird eingelesen.")
+if not os.path.isfile(CSV_DIRECTORY + csv_file_name):
+    print("ERROR: Angebenene Datei existiert nicht!")
+    sys.exit(1)
+else:
+    print("Datei " + csv_file_name + " wird eingelesen.")
 
 
 # # # # # Nachfragen ob Bögen englisch oder deutsch sind
