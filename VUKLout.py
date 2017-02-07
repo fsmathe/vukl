@@ -39,6 +39,9 @@ SCHEME_FILE_ENCODING = 'utf-8-sig'
 LATEX_OUTPUT_FILE_NAME = "tex/vukl.tex"
 LATEX_OUTPUT_FILE_ENCODING = "utf-8"
 
+# rating
+RATING_ENABLED = True
+
 # TODO: refactor to capital names
 const_lbgeneral = 5  # Bei weniger Teilnehmenden wird generell keine Auswertung erstellt
 const_lbvorlesung = 8  # Bei weniger Teilnehmenden wird zu den folgenden Veranstaltungen keine Auswertung erstellt
@@ -51,7 +54,8 @@ multisplit_questions = []
 ########################
 
 
-
+# TODO: refactor
+schnitt = [0,0,0,0,0,0]
 
 
 def proper_input(x_n):
@@ -196,6 +200,7 @@ def choose_from_list(x_list):
 # x_list_filter wird an filter_to_string weitergereicht,
 # um eine Auswahl an Inhalten zu erhalten.
 def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
+    global schnitt
     result = x_string
     # Ersetzung von '[Tabelle_Nr]'
     for ersetzung in re.findall('\[[^][]*\]', x_string):  # Über alle Vorkommen von '[…]' iterieren
@@ -206,8 +211,8 @@ def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
             if fragen[0] in list_fragen:
                 # Lese Einträge zu `Q_Nr` in Tabelle entsprechend momentaner Auswahl
                 vukl_cursor.execute(
-                    "SELECT `Q_" + part_after_underscore(fragen[0]) + "` FROM " + repr(
-                        part_before_underscore(fragen[0]))
+                    "SELECT `Q_" + part_after_underscore(fragen[0]) + "` FROM "
+                    + repr(part_before_underscore(fragen[0]))
                     + values_keys_to_string(x_lv, keys)  # WHERE „ist passende Lehrveranstaltung“
                     + filter_to_string(x_list_filter,
                                        part_before_underscore(fragen[0])))  # AND „passt auf momentane Filter“
@@ -251,6 +256,15 @@ def substitute_square_brackets(x_string, x_lv, x_keys, x_list_filter):
             if x_rohdaten[0][0] > max_zahl_teilnehmer:
                 max_zahl_teilnehmer = x_rohdaten[0][0]
         result = result.replace('[Teilnehmerzahl]', str(max_zahl_teilnehmer))
+    if RATING_ENABLED:
+        if '[Gesamtschnitt]' in result:
+            if (schnitt[5]+schnitt[4]+schnitt[3]+schnitt[2]+schnitt[1]+schnitt[0]) == 0:
+                result = result.replace('[Gesamtschnitt]', 'NA')
+            else:
+                gesamtschnitt = (6*schnitt[5]+5*schnitt[4]+4*schnitt[3]+3*schnitt[2]+2*schnitt[1]+schnitt[0]) / \
+                                (schnitt[5]+schnitt[4]+schnitt[3]+schnitt[2]+schnitt[1]+schnitt[0])
+                result = result.replace('[Gesamtschnitt]', str(round(gesamtschnitt,2)))
+            schnitt = [0,0,0,0,0,0]
     return result
 
 
@@ -283,6 +297,20 @@ def raw_to_distribution(list_x, x_range, x_bool_neutral):
         result += "}"
     else:
         print("Der Wert Range in der meta-Tabelle enthält keine Zahl, es wird aber eine benötigt!")
+    return result
+
+
+# TODO: reintroduced from FSR EIT version, required for rating --> may be merged somehow
+def raw_to_values(list_x, x_range):
+    if x_range.isdigit():
+        result = [0,] * int(x_range)
+        for item in list_x:
+            if item.isdigit():
+                result[int(item)-1] += 1
+#        print("raw to values: ", end="")
+#        print(result)
+    else:
+        return [0,]
     return result
 
 
@@ -502,6 +530,64 @@ def data_to_tex(x_list_auswahl_lv, x_list_scheme, x_list_filter):
                     print("Der 'Type' " + str(meta_dict['Type'])
                           + " ist bisher nicht vorgesehen in VUKLout. Die Auswertung der Frage wird daher ausgesetzt")
                     continue
+
+                # rating calculation
+                if RATING_ENABLED and len(style) > 1:          #TODO das einfach zu if false ändern, dann ist der stress weg!
+                    if style[1].isdigit():
+                        faktor = int(style[1])
+                        if meta_dict['Range'] is not None and meta_dict['Range'].isdigit():
+                            if int(meta_dict['Range']) > 6 or int(meta_dict['Range']) <5:
+                                print(meta_dict['Range'] + meta_dict['Q_de'] + ": Spektrum einer Schnittfrage ist nicht 5 oder 6")
+                            elif faktor < 1:
+                                print("Die Frage fliesst eh nicht ein")
+                            elif int(meta_dict['Range']) == 6:
+                                zwischenschnitt = raw_to_values(rohdaten_q, meta_dict['Range'])
+                                if meta_dict['Positive'] == 'C':
+                                    continue
+                                elif meta_dict['Positive'] == 'L':
+                                    schnitt[5] += zwischenschnitt[5]*faktor
+                                    schnitt[4] += zwischenschnitt[4]*faktor
+                                    schnitt[3] += zwischenschnitt[3]*faktor
+                                    schnitt[2] += zwischenschnitt[2]*faktor
+                                    schnitt[1] += zwischenschnitt[1]*faktor
+                                    schnitt[0] += zwischenschnitt[0]*faktor
+                                elif meta_dict['Positive'] == 'N':
+                                    continue
+                                else:
+                                    schnitt[5] += zwischenschnitt[0]*faktor
+                                    schnitt[4] += zwischenschnitt[1]*faktor
+                                    schnitt[3] += zwischenschnitt[2]*faktor
+                                    schnitt[2] += zwischenschnitt[3]*faktor
+                                    schnitt[1] += zwischenschnitt[4]*faktor
+                                    schnitt[0] += zwischenschnitt[5]*faktor
+                            else:
+                                zwischenschnitt = raw_to_values(rohdaten_q, meta_dict['Range'])
+                                if meta_dict['Positive'] == 'C':
+                                    schnitt[0] += zwischenschnitt[2]*faktor
+                                    schnitt[2] += zwischenschnitt[1]*faktor + zwischenschnitt[3]*faktor
+                                    schnitt[4] += zwischenschnitt[0]*faktor + zwischenschnitt[4]*faktor
+                                elif meta_dict['Positive'] == 'L':
+                                    schnitt[4] += zwischenschnitt[4]*faktor
+                                    schnitt[3] += zwischenschnitt[3]*faktor
+                                    schnitt[2] += zwischenschnitt[2]*faktor
+                                    schnitt[1] += zwischenschnitt[1]*faktor
+                                    schnitt[0] += zwischenschnitt[0]*faktor
+                                elif meta_dict['Positive'] == 'N':
+                                    continue
+                                else:
+                                    schnitt[4] += zwischenschnitt[0]*faktor
+                                    schnitt[3] += zwischenschnitt[1]*faktor
+                                    schnitt[2] += zwischenschnitt[2]*faktor
+                                    schnitt[1] += zwischenschnitt[3]*faktor
+                                    schnitt[0] += zwischenschnitt[4]*faktor
+                        else:
+                            print("hier bin ich")
+                    elif style[1] in list_fragen:
+                        print("Fragen fusionieren ist noch nicht eingebaut")
+                    else:
+                        print("Nach der Frage ist keine Zahl zur Berechnung des Gesamtschnitts")
+
+
             else:
                 print("Kein bekannter Befehl: " + style[0])
     return 0
@@ -658,4 +744,8 @@ with vukl_db:
         # [Periode, Lehrveranstaltung, Nachname, Vorname] haben.
         # Ferner ist list_scheme eine Liste, deren Einträge den Zeilen der scheme-Datei entsprechen.
         # leiter_filter enthält Paare an Fragen und Name der_des Übungsleiter_in
+
+        if RATING_ENABLED:
+                tex_file.write("""\\newcommand{\\rating}[1] { \colorbox{yellow}{\Huge{Rating: #1}} }""")
+
         data_to_tex(list_auswahl_lv, list_scheme, leiter_filter)
