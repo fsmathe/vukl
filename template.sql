@@ -1,82 +1,86 @@
+-- TODO: CREATE VIEW, CREATE TRIGGER
+
 -- questions given on the sheets
-CREATE TABLE questions (
+CREATE TABLE IF NOT EXISTS 'questions' (
 	'id' INTEGER PRIMARY KEY,
-	'type' TEXT, -- question type, eg. single or open
-	'text_de' TEXT NOT NULL, -- the question as given on the evaluation sheets (up to typography)
-	'text_en' TEXT NOT NULL,
-	'original_de' TEXT NOT NULL, -- the question as given on the evaluation sheets
-	'original_en' TEXT NOT NULL,
-	'polLeft_de' TEXT, -- text corresponding to smallest choice
-	'polLeft_en' TEXT,
-	'polRight_de' TEXT, -- text corresponding to largest choice
-	'polRight_en' TEXT,
+	'question_type' TEXT, -- question type, eg. single or open
 	'positive', -- index of choice considered positive
 	'range' INTEGER -- number of different choices
 );
 
--- choices for single and multiple choice questions
-/* to get the question texts together with
- * the texts of the possible answers one could use
-	SELECT questions.text, choices.text
-	FROM questions JOIN choices
-		ON questions.id=choices.question
-*/
-CREATE TABLE choices (
+CREATE TABLE IF NOT EXISTS 'question_texts' (
 	'question' INTEGER REFERENCES questions,
-	'choice',
-	'text',
-	PRIMARY KEY ('question','choice')
+	'lang' TEXT, -- language code
+	'text' TEXT, -- the question as given on the evaluation sheets (up to typography)
+	'original' TEXT, -- the question as given on the evaluation sheets
+	'left' TEXT, -- text corresponding to smallest choice
+	'right' TEXT, -- text corresponding to largest choice
+	PRIMARY KEY ("question","lang")
 );
 
--- order in which the questions appear on the different sheets
-CREATE TABLE sheetstructure (
-	'type' TEXT,
-	'number' INTEGER,
+-- choices for single and multiple choice questions
+/* To get the question texts together with
+	the texts of the possible answers one could use
+SELECT questions.text, choices.text
+FROM questions JOIN choices
+	ON questions.id=choices.question
+*/
+CREATE TABLE IF NOT EXISTS 'choices' (
 	'question' INTEGER REFERENCES questions,
-	PRIMARY KEY ('type','number')
+	'choice' INTEGER,
+	'lang' TEXT,
+	'text',
+	PRIMARY KEY ("question","choice","lang")
+);
+
+-- order in which the questions appear on the different forms
+CREATE TABLE IF NOT EXISTS 'form_structure' (
+	'form' TEXT,
+	'position' INTEGER,
+	'question' INTEGER REFERENCES questions,
+	'multiple' INTEGER,
+	PRIMARY KEY ("form","position")
 );
 
 -- evaluated courses
-CREATE TABLE courses (
-	id TEXT PRIMARY KEY, -- Kennung
+CREATE TABLE IF NOT EXISTS 'courses' (
+	'id' INTEGER PRIMARY KEY,
+	'Kennung',
 	'Teilbereich',
 	'Anrede',
 	'Titel',
 	'Vorname',
 	'Nachname',
 	'Lehrveranstaltung',
-	'Lehrveranstaltung_en', -- has to be given by hand
-	--'RaumTermin', -- not set
-	--'Subdozent', -- not set
 	'Periode'
-	--'Studiengang', -- not set
-	--'Vertiefungsgebiet', -- ???
 );
 
 -- the evaluations done in a course
-CREATE TABLE evaluations (
+CREATE TABLE IF NOT EXISTS 'evaluations' (
 	'course' TEXT REFERENCES courses,
-	'type' TEXT
+	'form' TEXT
 );
 
 -- answers given in the evaluations
-/* to get the question texts together with
- * the given answers one could use
-	SELECT questions.text, answers.text
-	FROM questions JOIN answers
-		ON questions.id=answers.question
+/* To get the question texts together with the given answers one could use
+SELECT questions.text, answers.text
+FROM questions JOIN answers
+	ON questions.id=answers.question
 
- * to get the answers in text form for all questions
- * including multiple choice one could use
-	SELECT coalesce(choices.text, answers.text)
-	FROM answers LEFT JOIN choices USING (question,text)
+ * To get the answers in text form for all questions
+	including multiple choice one could use
+SELECT coalesce(choices.text, answers.text)
+FROM answers LEFT JOIN choices USING (question,text)
+ * ("course","question","form","sheet") is unique unless
+	"question" is a multiple choice question.
+ * If "question" is single/multiple choice, 
+	then "text"="choices"."choice" AND "question"="choices"."question" should
+	be satisfied for exactly one entry of "choices" per language.
 */
-CREATE TABLE answers (
-	'course' TEXT REFERENCES courses,
+CREATE TABLE IF NOT EXISTS 'answers' (
+	'course' INTEGER REFERENCES courses,
+	'form',
+	'sheet',
 	'question' INTEGER REFERENCES questions,
-	'Bogen',
-	'text',
-	PRIMARY KEY ('course','question','Bogen')
-	-- if answers.question=choices.question holds at least once,
-	-- then also answers.text=choices.choice must hold at least once.
+	'value'
 );
