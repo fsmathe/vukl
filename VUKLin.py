@@ -87,11 +87,11 @@ with codecs.open(CSV_DIRECTORY + csv_file_name, "r", encoding=CSV_FILE_ENCODING)
     headline_split_with_quote = [x.strip() for x in headline.split(CSV_DELIMINITER)]
     headline_split = [cut_quote(x) for x in headline_split_with_quote]
     if headline_split[-1] == "Datensatz-Ursprung" and headline_split[-2] == "Zeitstempel":
-        # TODO: depends on field "Seriendruck-ID": is 17 if field is available in CSV
-        anzahl_fragen = len(headline_split) - 16
+        # TODO: depends on field "Seriendruck-ID": is 17 if field is available in CSV, 16 else
+        anzahl_fragen = len(headline_split) - 17
     elif headline_split[-1] == "Datensatz-Ursprung":
-        # TODO: depends on field "Seriendruck-ID": is 16 if field is available in CSV
-        anzahl_fragen = len(headline_split) - 15
+        # TODO: depends on field "Seriendruck-ID": is 16 if field is available in CSV, 15 else
+        anzahl_fragen = len(headline_split) - 16
     else:
         print("Die Kopfzeile der Datei hat als letzten Eintrag nicht 'Datensatz-Ursprung' wie bisher, "
               "da Electric Paper den Export geändert hat. Der Python Code muss an dieser Stelle angepasst werden."
@@ -111,10 +111,10 @@ with codecs.open(CSV_DIRECTORY + csv_file_name, "r", encoding=CSV_FILE_ENCODING)
         csv_datarow_with_quote = [x.strip() for x in row.split(CSV_DELIMINITER)]
         csv_datarow = [cut_quote(x) for x in csv_datarow_with_quote]
         if len(csv_datarow) == len(headline_split):
-            # TODO: for available field "Seriendruck-ID": change last entry to csv_datarow[15:15 + anzahl_fragen]
+            # TODO: for available field "Seriendruck-ID": change last entry to csv_datarow[15:15 + anzahl_fragen], csv_datarow[14:14 + anzahl_fragen] else
             csv_to_dict_datarow = [csv_datarow[0], csv_datarow[1], csv_datarow[2], csv_datarow[3], csv_datarow[4],
                                    csv_datarow[5], csv_datarow[5], '', '', csv_datarow[12], '', '', '',
-                                   csv_datarow[-1], csv_language + csv_datarow[13]] + csv_datarow[14:14 + anzahl_fragen]
+                                   csv_datarow[-1], csv_language + csv_datarow[13]] + csv_datarow[15:15 + anzahl_fragen]
             dictlist.append(dict(zip(keys, tuple(csv_to_dict_datarow))))
         else:
             print("Folgende Zeile hat nicht die passende Anzahl an Feldern/Tabulatoren "
