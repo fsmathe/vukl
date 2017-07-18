@@ -1,0 +1,59 @@
+chapter [Lehrveranstaltung]
+section Dozent: [Vorname] [Nachname]
+Kern-V-v4_1	1
+Kern-V-v4_2	1
+Kern-V-v4_3	1
+Kern-V-v4_4	1
+Kern-V-v4_5	1
+Kern-V-v4_6	1
+Kern-V-v4_7	1
+Kern-V-v4_8	1
+Kern-V-v4_9	1
+Kern-V-v4_10	1
+Kern-V-v4_11	1
+Kern-V-v4_12	1
+Kern-V-v4_13	1
+Kern-V-v4_14	1
+Kern-V-v4_15	1
+Kern-V-v4_16	1
+Kern-V-v4_17	0
+Kern-V-v4_18	0
+Kern-V-v4_19	0
+
+Vo04en8_1	1
+Vo04en8_2	1
+Vo04en8_3	1
+Vo04en8_4	1
+Vo04en8_5	1
+Vo04en8_6	1
+Vo04en8_7	1
+Vo04en8_8	1
+Vo04en8_9	1
+Vo04en8_10	1
+Vo04en8_11	1
+Vo04en8_12	1
+Vo04en8_13	1
+Vo04en8_14	1
+Vo04en8_15	1
+Vo04en8_16	1
+Vo04en8_17	0
+Vo04en8_18	0
+Vo04en8_19	0
+print \rating{[Gesamtschnitt]}
+
+
+chapter [Lehrveranstaltung] Dozentenbogen
+section Dozent: [Vorname] [Nachname]
+Dozbogen_1
+Dozbogen_2
+Dozbogen_3
+Dozbogen_4
+Dozbogen_5
+Dozbogen_6
+Dozbogen_7
+Dozbogen_8
+Dozbogen_9
+Dozbogen_10
+Dozbogen_11
+Dozbogen_12
+Dozbogen_13
