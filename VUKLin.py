@@ -316,7 +316,8 @@ for lv in lv_list:
                         "' OR ID GLOB '" + db_table_name + "_*' AND NOT ID GLOB '" + db_table_name + "_*-*'")
     question_names = vukl_cursor.fetchall()
     if len(question_names) != anzahl_fragen:
-        print('Anzahl der Fragen stimmt nicht mit Angaben in meta-Tabelle überein')
+        print('Anzahl der Fragen stimmt nicht mit Angaben in meta-Tabelle überein:')
+        print('\tAnzahl CSV: ' + str(anzahl_fragen) + " | Anzahl laut meta-Tabelle: " + str(len(question_names)))
         exit()
     for key in keys_list[0:-anzahl_fragen]:
         str_import_dict = str_import_dict + "`" + key + "`,"
