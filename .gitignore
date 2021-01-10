@@ -2,12 +2,15 @@
 # TeX build products
 *.aux
 *.auxlock
+*.bbl
+*.blg
 *.log
 *.out
 *.pdf
 *.toc
 *.maf
 *.mtc*
+*.synctex.gz
 
 # Various Data
 tex/vukl.tex
