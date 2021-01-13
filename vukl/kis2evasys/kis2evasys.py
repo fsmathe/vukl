@@ -22,11 +22,11 @@ KIS2EvaSys - Umfragen aus KIS-Veranstaltungen anlegen
 __author__ = "Clemens Reibetanz, Christian De Schryver"
 
 # Bitte die 3 Werte eintragen
-SEMESTER = "[SS16]"
-# 27=WS15/16, 28=SS16, 29=WS16/17, 30=SS17
-PERIOD = 28
+SEMESTER = "[SS19]"
+# 27=WS15/16, 28=SS16, 29=WS16/17, 30=SS17, 31=WS17/18, 32=SS18, 33=WS18/19, 34=SS19
+PERIOD = 34
 # URL von KIS -> Studiengänge und Veranstaltungen -> Elektrotechnik und Informationstechnik -> Elektrotechnik und Informationstechnik -> Dozent
-URL = 'http://www.kis.uni-kl.de/campus/all/eventlist.asp?gguid=0xB4AEA5931404C84A894AEB7A64B87A59&find=&mode=field&apps=&start=0&sort2=&sort=dozent&tguid=0x7709598EC4A0074C9686617A6FBB13F1'
+URL = 'https://www.kis.uni-kl.de/campus/all/eventlist.asp?mode=field&gguid=0x090A152C497B43FE801EDB13F2F5CA60&tguid=0x20A24741AF3347FEB6943B4BA195534F'
 # KIS Zeichensatz wie im HTML-Meta-Tag festgelegt
 URLENCODING = "iso-8859-1"
 

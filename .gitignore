@@ -12,12 +12,13 @@
 *.toc
 *.maf
 *.mtc*
+*.synctex.gz
 
 # Various Data
 tex/vukl.tex
 csv/
 db/
-kis2evasys/data/
+vukl/kis2evasys/data*
 
 # System Artifacts
 .DS_Store
